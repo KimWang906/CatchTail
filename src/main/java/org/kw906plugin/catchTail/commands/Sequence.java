@@ -12,8 +12,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.kw906plugin.catchTail.CatchTail;
 import org.kw906plugin.catchTail.GameStatus;
-import org.kw906plugin.catchTail.PlayerData;
 import org.kw906plugin.catchTail.SendMessage;
+import org.kw906plugin.catchTail.player.PlayerData;
 
 import java.lang.reflect.Field;
 import java.util.*;
@@ -235,17 +235,7 @@ public class Sequence {
                                            .color(NamedTextColor.GRAY)
         );
         GameStatus.setStatus(GameStatus.ENGINE_SETUP);
-//
-//        GameBorder.setborder();
-//
-//        if (!ItemDistribute.DistributeItems())
-//            return;
-//        gameTime = 0;
-//
-//        // Broadcaset Setting
-//        if (GameSettings.BROADCAST_CONFIG.value() == 1)
-//            GameSettings.broadcastSettingToOp();
-//
+
         // Remove Dropped Item
         for (Entity current : CatchTail.config.getOverworld().getEntities()) {
             if (current instanceof Item) {
@@ -255,38 +245,9 @@ public class Sequence {
                 current.remove();
             }
         }
-//        for (Player player : Bukkit.getOnlinePlayers()) {
-//            if (player.getGameMode() != GameMode.SURVIVAL)
-//                continue;
-//
-//            // Distribute Item
-//            player.getInventory().clear();
-//            player.getInventory().addItem(SpecialItems.WOOD_SWORD.get());
-//
-//            // SETUP REMAING TIME
-//            Logger logger = Bukkit.getServer().getLogger();
-//            logger.info(">> Setting up user : " + player.getName());
-//
-//            int lifeTime = (int) Math
-//                    .floor(Math.random() * (GameSettings.MAX_LIFE.seconds() - GameSettings.MIN_LIFE.seconds() + 1))
-//                    + GameSettings.MIN_LIFE.seconds();
-//            // playerRemaingTime.put(player, lifeTime);
-//            updateTime(player, lifeTime);
-//
-//            // FINAL STEP : Add to Playing List
-//            playerPlaying.add(player);
-//        }
-//
-//        if (GameSettings.ADD_NULL_PLAYER.value() == 1) {
-//            playerRemaingTime.put(null, 60);
-//            playerPlaying.add(null);
-//        }
-//
-//        SendMessage.broadcastMessage(ChatColor.GREEN + "게임 준비 완료 -- 시작!");
-//        GameSettings.gameInfo();
-//
-//        countDown = (int) GameSettings.COUNTDOWN_TIME.value();
-//        GameStatus.setStatus(GameStatus.COUNT_DOWN);
+
+        playerData.shuffleColor();
+
     }
 
     public static void cleanup() {
