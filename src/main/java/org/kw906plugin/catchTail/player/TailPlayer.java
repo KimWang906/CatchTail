@@ -8,11 +8,21 @@ public class TailPlayer {
     private Player player;
     private String colorName;
     private NamedTextColor color;
+    private Boolean isOut;
 
     public TailPlayer(Player player, String colorName, NamedTextColor color) {
         this.player = player;
         this.colorName = colorName;
         this.color = color;
+        isOut = false;
+    }
+
+    public Boolean isNotOut() {
+        return !isOut;
+    }
+
+    public void setOut(Boolean out) {
+        isOut = out;
     }
 
     public NamedTextColor getColor() {

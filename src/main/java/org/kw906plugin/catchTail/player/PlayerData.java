@@ -13,6 +13,7 @@ public class PlayerData {
 
     public List<Player> players = new ArrayList<>();
     private final List<TailPlayer> tailPlayers = new ArrayList<>();
+    private final ColorMapper colorMapper = new ColorMapper();
 
     public void add(Player player) {
         players.add(player);
@@ -26,8 +27,23 @@ public class PlayerData {
         players.clear();
     }
 
+    public TailPlayer getNextPlayer(Player player) {
+        TailPlayer tailPlayer = tailPlayers.stream().filter(t -> t.getPlayer().getName().equals(player.getName())).findFirst().orElse(null);
+        if (tailPlayer == null) {
+            return null;
+        }
+        String prevColor = tailPlayer.getColorName();
+        while (true) {
+            String nextColor = colorMapper.getNextColor(prevColor);
+            TailPlayer nextPlayer = tailPlayers.stream().filter(t -> t.getColorName().equals(nextColor)).findFirst().orElse(null);
+            if (nextPlayer.isNotOut()) {
+                return nextPlayer;
+            }
+            prevColor = nextColor;
+        }
+    }
+
     public void shuffleColor() {
-        ColorMapper colorMapper = new ColorMapper();
         List<Integer> existingColors = new ArrayList<>();
         int playerCount = players.size();
         while (!players.isEmpty()) {

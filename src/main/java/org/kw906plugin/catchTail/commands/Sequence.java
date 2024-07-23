@@ -14,6 +14,7 @@ import org.kw906plugin.catchTail.CatchTail;
 import org.kw906plugin.catchTail.GameStatus;
 import org.kw906plugin.catchTail.SendMessage;
 import org.kw906plugin.catchTail.player.PlayerData;
+import org.kw906plugin.catchTail.player.TailPlayer;
 
 import java.lang.reflect.Field;
 import java.util.*;
@@ -259,5 +260,9 @@ public class Sequence {
     public static void out(Player player)
     {
         // 죽인 팀에게 흡수되도록 코드 작성..
+    }
+
+    public static TailPlayer getNextPlayer(Player player){
+        return playerData.getNextPlayer(player);
     }
 }
