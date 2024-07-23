@@ -1,24 +1,25 @@
 package org.kw906plugin.catchTail.commands;
 
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.NamedTextColor;
+import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.kw906plugin.catchTail.CatchTail;
 import org.kw906plugin.catchTail.GameStatus;
 import org.kw906plugin.catchTail.PlayerData;
 import org.kw906plugin.catchTail.SendMessage;
 
 import java.lang.reflect.Field;
-import java.util.Arrays;
-import java.util.Optional;
+import java.util.*;
 import java.util.logging.Level;
 
-import static org.bukkit.Bukkit.getLogger;
-import static org.bukkit.Bukkit.getOnlinePlayers;
+import static org.bukkit.Bukkit.*;
 import static org.kw906plugin.catchTail.utils.PlayerImpl.getPlayerByName;
 import static org.kw906plugin.catchTail.utils.UpdateWorldBorder.setWorldBorder;
 
@@ -76,6 +77,8 @@ public class Sequence {
                                               .color(NamedTextColor.BLUE));
         cleanup();
         setup();
+        preparingTeleport();
+
     }
 
     public static void stop() {
@@ -116,6 +119,7 @@ public class Sequence {
                     getLogger().log(Level.WARNING, e.getMessage());
                 }
             }
+            return;
         }
 
         Optional<Field> configOptional = Arrays.stream(CatchTail.config.getClass().getFields())
@@ -150,6 +154,7 @@ public class Sequence {
                 if (success) {
                     SendMessage.sendMessageOP(Component.text("설정이 성공적으로 변경되었습니다!"));
                     SendMessage.sendMessageOP(Component.text("변경 내용: (" + beforeValue + "→" + args[1] + ")"));
+                    CatchTail.config.applyConfig();
                 }
             } catch (IllegalAccessException e) {
                 SendMessage.sendMessageOP(Component.text("설정을 변경하던 중 오류가 발생하였습니다.\n" +
@@ -158,6 +163,70 @@ public class Sequence {
                 getLogger().log(Level.WARNING, e.getMessage());
             }
         }
+    }
+
+    public static void preparingTeleport() {
+        GameStatus.setStatus(GameStatus.COUNT_DOWN);
+        SendMessage.broadcastMessage(Component.text("10초 후 랜덤한 위치로 텔레포트합니다.")
+                                              .color(NamedTextColor.BLUE));
+
+        for (int i = 9; i > 0; i--) {
+            int countdown = i;
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    SendMessage.broadcastMessage(Component.text(countdown + "초")
+                                                          .color(NamedTextColor.AQUA));
+                }
+            }.runTaskLater(JavaPlugin.getProvidingPlugin(CatchTail.class), (10 - i) * 20L);  // 1초(20 틱) 간격으로 실행
+        }
+
+        // 10초 후에 모든 플레이어를 랜덤한 위치로 텔레포트
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                World world = getWorlds().getFirst();
+                List<Location> locations = new ArrayList<>();
+                Random random = new Random();
+
+                for (Player player : getOnlinePlayers()) {
+                    Location randomLocation = getRandomLocation(world, random, locations);
+                    locations.add(randomLocation);
+                    player.teleport(randomLocation);
+                }
+
+                GameStatus.setStatus(GameStatus.RUNNING);
+                SendMessage.broadcastMessage(Component.text("모든 인원이 텔레포트되었습니다.")
+                                                      .color(NamedTextColor.BLUE));
+            }
+        }.runTaskLater(JavaPlugin.getProvidingPlugin(CatchTail.class), 190L);  // 10초 후 실행 (200 틱)
+    }
+
+
+    private static Location getRandomLocation(World world, Random random, List<Location> locations) {
+        Location location;
+        boolean isSafe;
+
+        do {
+            double x = random.nextInt(50000) - 25000;
+            double z = random.nextInt(50000) - 25000;
+            location = new Location(world, x, 0, z);
+            location.setY(world.getHighestBlockAt(location).getY() + 1);
+
+            isSafe = isSafeLocation(location, locations);
+
+        } while (!isSafe);
+
+        return location;
+    }
+
+    private static boolean isSafeLocation(Location location, List<Location> locations) {
+        for (Location loc : locations) {
+            if (loc.distance(location) < 2000) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public static void setup()
@@ -226,7 +295,7 @@ public class Sequence {
         countDown = -1;
     }
 
-    public static void out()
+    public static void out(Player player)
     {
         // 죽인 팀에게 흡수되도록 코드 작성..
     }
