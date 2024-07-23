@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/CatchTail.iml" filepath="$PROJECT_DIR$/.idea/modules/CatchTail.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/CatchTail.main.iml" filepath="$PROJECT_DIR$/.idea/modules/CatchTail.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/CatchTail.test.iml" filepath="$PROJECT_DIR$/.idea/modules/CatchTail.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/org.kw906plugin.CatchTail.test.iml" filepath="$PROJECT_DIR$/.idea/modules/org.kw906plugin.CatchTail.test.iml" />
     </modules>
   </component>
 </project>

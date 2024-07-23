@@ -19,8 +19,8 @@ public class Configure {
     private World nether = null;
     private World theEnd = null;
 
-    public int overworldWorldBorderSize = 100000;
-    public int netherWorldBorderSize = 12500;
+    public int overworldWorldBorderSize = 50000;
+    public int netherWorldBorderSize = 6250;
     public int endWorldBorderSize = 3000;
     private final FileConfiguration config = getPlugin(CatchTail.class).getConfig();
 

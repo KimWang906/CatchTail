@@ -1,20 +1,25 @@
 package org.kw906plugin.catchTail.commands;
 
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.TextComponent;
+//import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.NamedTextColor;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitScheduler;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.kw906plugin.catchTail.CatchTail;
 import org.kw906plugin.catchTail.GameStatus;
 import org.kw906plugin.catchTail.PlayerData;
 import org.kw906plugin.catchTail.SendMessage;
 
 import java.lang.reflect.Field;
-import java.util.Arrays;
-import java.util.Optional;
+import java.util.*;
 import java.util.logging.Level;
 
 import static org.bukkit.Bukkit.getLogger;
@@ -72,10 +77,10 @@ public class Sequence {
     }
 
     public static void start() {
-        SendMessage.broadcastMessage(Component.text("시퀀스 - 게임이 시작됩니다!")
-                                              .color(NamedTextColor.BLUE));
+        SendMessage.broadcastMessage(Component.text("시퀀스 - 게임이 시작됩니다!").color(NamedTextColor.BLUE));
         cleanup();
         setup();
+        startGame();
     }
 
     public static void stop() {
@@ -218,6 +223,69 @@ public class Sequence {
 //
 //        countDown = (int) GameSettings.COUNTDOWN_TIME.value();
 //        GameStatus.setStatus(GameStatus.COUNT_DOWN);
+    }
+
+    public static void startGame() {
+
+        SendMessage.broadcastMessage(Component.text("10초 후 랜덤한 위치로 텔레포트합니다.")
+                .color(NamedTextColor.BLUE));
+
+        for (int i = 9; i > 0; i--) {
+            int countdown = i;
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    SendMessage.broadcastMessage(Component.text(countdown + "초")
+                                    .color(NamedTextColor.AQUA));
+                }
+            }.runTaskLater(JavaPlugin.getProvidingPlugin(CatchTail.class), (10 - i) * 20L);  // 1초(20 틱) 간격으로 실행
+        }
+
+        // 10초 후에 모든 플레이어를 랜덤한 위치로 텔레포트
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                World world = Bukkit.getWorlds().get(0);
+                List<Location> locations = new ArrayList<>();
+                Random random = new Random();
+
+                for (Player player : Bukkit.getOnlinePlayers()) {
+                    Location randomLocation = getRandomLocation(world, random, locations);
+                    locations.add(randomLocation);
+                    player.teleport(randomLocation);
+                }
+
+                SendMessage.broadcastMessage(Component.text("모든 인원이 텔레포트되었습니다.")
+                        .color(NamedTextColor.BLUE));
+            }
+        }.runTaskLater(JavaPlugin.getProvidingPlugin(CatchTail.class), 190L);  // 10초 후 실행 (200 틱)
+    }
+
+
+    private static Location getRandomLocation(World world, Random random, List<Location> locations) {
+        Location location;
+        boolean isSafe;
+
+        do {
+            double x = random.nextInt(50000) - 25000;
+            double z = random.nextInt(50000) - 25000;
+            location = new Location(world, x, 0, z);
+            location.setY(world.getHighestBlockAt(location).getY() + 1);
+
+            isSafe = isSafeLocation(location, locations);
+
+        } while (!isSafe);
+
+        return location;
+    }
+
+    private static boolean isSafeLocation(Location location, List<Location> locations) {
+        for (Location loc : locations) {
+            if (loc.distance(location) < 2000) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public static void cleanup() {
