@@ -1,7 +1,0 @@
-worldborder:
-  overworld:
-    worldborder_size: 100000
-  nether:
-    worldborder_size: 12500
-  the-end:
-    worldborder_size: 3000
