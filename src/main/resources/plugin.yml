@@ -1,0 +1,11 @@
+name: CatchTail
+version: '1.0'
+main: org.kw906plugin.catchTail.CatchTail
+api-version: '1.21'
+commands:
+  catch-tail:
+    description: "꼬리잡기 플러그인 제작자: KimWang906"
+    usage: "/ct [...options]"
+    aliases: ct
+    permission: catch-tail
+    permission-message: "이 명령어를 사용할 권한이 없습니다!"

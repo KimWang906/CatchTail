@@ -1,0 +1,16 @@
+world_name: "world"
+nether_name: "world_nether"
+end_name: "world_the_end"
+worldborder_config:
+  overworld:
+    worldborder_size: 100000
+    x: 0
+    z: 0
+  nether:
+    worldborder_size: 12500
+    x: 0
+    z: 0
+  the-end:
+    worldborder_size: 3000
+    x: 0
+    z: 0
