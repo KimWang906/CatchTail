@@ -167,7 +167,7 @@ public class Sequence {
 
     public static void preparingTeleport() {
         GameStatus.setStatus(GameStatus.COUNT_DOWN);
-        SendMessage.broadcastMessage(Component.text("5초 후 랜덤한 위치로 텔레포트합니다.")
+        SendMessage.broadcastMessage(Component.text(CatchTail.config.countDown + "초 후 랜덤한 위치로 텔레포트합니다.")
                 .color(NamedTextColor.BLUE));
 
         if (CatchTail.config.countDown > 0) {
@@ -179,7 +179,7 @@ public class Sequence {
                         SendMessage.broadcastMessage(Component.text(countdown + "초")
                                 .color(NamedTextColor.AQUA));
                     }
-                }.runTaskLater(JavaPlugin.getProvidingPlugin(CatchTail.class), (10 - i) * 20L);  // 1초(20 틱) 간격으로 실행
+                }.runTaskLater(JavaPlugin.getProvidingPlugin(CatchTail.class), (CatchTail.config.countDown - i) * 20L);  // 1초(20 틱) 간격으로 실행
             }
         }
 
@@ -202,7 +202,7 @@ public class Sequence {
                         .color(NamedTextColor.BLUE));
                 playerData.shuffleColor();
             }
-        }.runTaskLater(JavaPlugin.getProvidingPlugin(CatchTail.class), 190L);  // 10초 후 실행 (200 틱)
+        }.runTaskLater(JavaPlugin.getProvidingPlugin(CatchTail.class), CatchTail.config.countDown * 20L);  // 10초 후 실행 (200 틱)
     }
 
 
