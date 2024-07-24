@@ -52,12 +52,12 @@ public class PlayerTracking implements Listener {
             Particle particle = Particle.valueOf("soul_fire_flame");
 
             double nowX = player.getLocation().getX();
-            double nowY = player.getLocation().getY();
+            double nowY = player.getLocation().getY() + 1.5;
             double nowZ = player.getLocation().getZ();
             SendMessage.sendMessageOP(Component.text("현재 좌표 고정").color(NamedTextColor.AQUA));
 
             double dirX = nextPlayer.getLocation().getX() - nowX;
-            double dirY = nextPlayer.getLocation().getY() - nowY;
+            double dirY = nextPlayer.getLocation().getY() - nowY + 1.5;
             double dirZ = nextPlayer.getLocation().getZ() - nowZ;
             SendMessage.sendMessageOP(Component.text("방향 백터 계산").color(NamedTextColor.AQUA));
 
@@ -69,11 +69,11 @@ public class PlayerTracking implements Listener {
             double unitZ = dirZ / dir;
             SendMessage.sendMessageOP(Component.text("단위 백터 계산").color(NamedTextColor.AQUA));
 
-            for (int i = 0; i < 10; i++) {
+            for (int i = 0; i < 20; i++) {
                 nowX = nowX + 0.25 * unitX;
                 nowY = nowY + 0.25 * unitY;
                 nowZ = nowZ + 0.25 * unitZ;
-                world.spawnParticle(particle, nowX, nowY, nowZ, 1, 0.1, 0.1, 0.1, 0.01);
+                world.spawnParticle(particle, nowX, nowY, nowZ, 1, 0, 0, 0, 0.005);
                 SendMessage.sendMessageOP(Component.text(i + "번째 파티클 생성").color(NamedTextColor.AQUA));
             }
             clickedItem.subtract();
