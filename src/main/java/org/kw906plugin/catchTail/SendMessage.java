@@ -65,4 +65,8 @@ public class SendMessage extends JavaPlugin {
         Title newTitle = Title.title(title, component, time);
         player.showTitle(newTitle);
     }
+
+    public static void sendActionBar(Player player, Component msg) {
+        player.sendActionBar(msg);
+    }
 }
