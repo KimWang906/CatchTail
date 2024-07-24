@@ -16,6 +16,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.kw906plugin.catchTail.CatchTail;
 import org.kw906plugin.catchTail.GameStatus;
 import org.kw906plugin.catchTail.SendMessage;
+import org.kw906plugin.catchTail.player.DetectEnemy;
 import org.kw906plugin.catchTail.player.PlayerData;
 import org.kw906plugin.catchTail.player.TailPlayer;
 
@@ -79,7 +80,7 @@ public class Sequence {
                 .color(NamedTextColor.BLUE));
         setup();
         preparingTeleport();
-
+        DetectEnemy.enableDetectEnemy();
     }
 
     public static void stop() {
@@ -87,6 +88,7 @@ public class Sequence {
                 .color(NamedTextColor.RED));
         GameStatus.setStatus(GameStatus.STOPPED);
         cleanup();
+        DetectEnemy.disableDetectEnemy();
     }
 
     public static void unregister(String[] args) {
@@ -211,8 +213,8 @@ public class Sequence {
         boolean isSafe;
 
         do {
-            double x = random.nextInt(50000) - 25000;
-            double z = random.nextInt(50000) - 25000;
+            double x = random.nextInt(3000);
+            double z = random.nextInt(3000);
             location = new Location(world, x, 0, z);
             location.setY(world.getHighestBlockAt(location).getY() + 1);
 
