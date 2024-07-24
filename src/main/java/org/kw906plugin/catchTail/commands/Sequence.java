@@ -44,6 +44,14 @@ public class Sequence {
         );
 
         try {
+            SendMessage.broadcastMessage(Component.text("시퀀스 - 플레이어 초기화 중.."));
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                AttributeInstance attribute = player.getAttribute(Attribute.GENERIC_MAX_HEALTH);
+                assert attribute != null;
+                attribute.setBaseValue(20);
+                player.heal(20);
+            }
+
             SendMessage.broadcastMessage(Component.text("시퀀스 - 오버월드 월드보더 설정 중..")
                     .color(NamedTextColor.GRAY));
             setWorldBorder(CatchTail.config.getOverworld(), CatchTail.config.overworldWorldBorderSize);

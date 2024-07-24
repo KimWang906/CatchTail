@@ -56,14 +56,14 @@ public class ColorMapper {
         colorCodeMap.put(1, Color.ORANGE);
         colorCodeMap.put(2, Color.YELLOW);
         colorCodeMap.put(3, Color.GREEN);
-        colorCodeMap.put(4, Color.fromRGB(1410892117));
+        colorCodeMap.put(4, Color.TEAL);
         colorCodeMap.put(5, Color.BLUE);
-        colorCodeMap.put(6, Color.fromRGB(2299476));
+        colorCodeMap.put(6, Color.NAVY);
         colorCodeMap.put(7, Color.PURPLE);
-        colorCodeMap.put(8, Color.fromRGB(5584944));
+        colorCodeMap.put(8, Color.MAROON);
         colorCodeMap.put(9, Color.BLACK);
         colorCodeMap.put(10, Color.GRAY);
         colorCodeMap.put(11, Color.WHITE);
-        colorCodeMap.put(12, Color.fromRGB(16733695));
+        colorCodeMap.put(12, Color.FUCHSIA);
     }
 }
