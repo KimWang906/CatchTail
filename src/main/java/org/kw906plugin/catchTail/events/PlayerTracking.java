@@ -37,7 +37,8 @@ public class PlayerTracking implements Listener {
             Player nextPlayer = Sequence.getNextPlayer(player).getPlayer();
 
             World targetWorld = nextPlayer.getWorld();
-            if (targetWorld == world) {
+            SendMessage.sendMessageOP(Component.text("월드 고정").color(NamedTextColor.AQUA));
+            if (targetWorld != world) {
                 player.sendTitlePart(TitlePart.SUBTITLE, Component.text("추적 오류: 대상과 같은 월드에 있지 않습니다.")
                         .color(NamedTextColor.RED));
                 return;
