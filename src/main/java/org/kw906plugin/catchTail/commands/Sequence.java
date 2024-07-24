@@ -288,4 +288,24 @@ public class Sequence {
             SendMessage.sendMessageOP(Component.text(player.getName()));
         }
     }
+
+    public static void stun(Player player) {
+        if (playerData.isNotOutPlayer(player)) {
+            SendMessage.sendMessagePlayer(player, Component.text("기절하셨습니다."));
+            playerData.stunPlayer(player);
+        }
+    }
+
+    public static boolean checkPlayerStun(Player player) {
+        TailPlayer tailPlayer = playerData.getTailPlayer(player);
+        Long now = System.currentTimeMillis() / 1000;
+        long duration = tailPlayer.isNotOut() ? 120L : 30L;
+        return now - tailPlayer.getStunnedAt() >= duration;
+    }
+
+    public static void releaseStun(Player player) {
+        if (playerData.getStunnedAt(player) != 0) {
+            playerData.releaseStun(player);
+        }
+    }
 }
