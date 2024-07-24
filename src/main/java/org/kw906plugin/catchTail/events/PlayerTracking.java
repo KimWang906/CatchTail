@@ -52,12 +52,12 @@ public class PlayerTracking implements Listener {
             Particle particle = Particle.valueOf("soul_fire_flame");
 
             double nowX = player.getLocation().getX();
-            double nowY = player.getLocation().getY() + 1.5;
+            double nowY = player.getLocation().getY() + 1.0;
             double nowZ = player.getLocation().getZ();
             SendMessage.sendMessageOP(Component.text("현재 좌표 고정").color(NamedTextColor.AQUA));
 
             double dirX = nextPlayer.getLocation().getX() - nowX;
-            double dirY = nextPlayer.getLocation().getY() - nowY + 1.5;
+            double dirY = nextPlayer.getLocation().getY() - nowY + 1.0;
             double dirZ = nextPlayer.getLocation().getZ() - nowZ;
             SendMessage.sendMessageOP(Component.text("방향 백터 계산").color(NamedTextColor.AQUA));
 
