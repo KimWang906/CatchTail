@@ -12,7 +12,7 @@ import java.util.NoSuchElementException;
 
 public class PlayerData {
 
-    public List<Player> players = new ArrayList<>();
+    private final List<Player> players = new ArrayList<>();
     private final List<TailPlayer> tailPlayers = new ArrayList<>();
     private final ColorMapper colorMapper = new ColorMapper();
 
@@ -26,6 +26,14 @@ public class PlayerData {
 
     public void cleanup() {
         players.clear();
+    }
+
+    public List<TailPlayer> getTailPlayers() {
+        return tailPlayers;
+    }
+
+    public List<Player> getPlayers() {
+        return players;
     }
 
     public TailPlayer getNextPlayer(Player player) {
