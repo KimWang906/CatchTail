@@ -169,15 +169,17 @@ public class Sequence {
         SendMessage.broadcastMessage(Component.text("10초 후 랜덤한 위치로 텔레포트합니다.")
                                               .color(NamedTextColor.BLUE));
 
-        for (int i = CatchTail.config.countDown; i > 0; i--) {
-            int countdown = i;
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    SendMessage.broadcastMessage(Component.text(countdown + "초")
-                                                          .color(NamedTextColor.AQUA));
-                }
-            }.runTaskLater(JavaPlugin.getProvidingPlugin(CatchTail.class), (10 - i) * 20L);  // 1초(20 틱) 간격으로 실행
+        if (CatchTail.config.countDown > 0) {
+            for (int i = CatchTail.config.countDown; i > 0; i--) {
+                int countdown = i;
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        SendMessage.broadcastMessage(Component.text(countdown + "초")
+                                                              .color(NamedTextColor.AQUA));
+                    }
+                }.runTaskLater(JavaPlugin.getProvidingPlugin(CatchTail.class), (10 - i) * 20L);  // 1초(20 틱) 간격으로 실행
+            }
         }
 
         // 10초 후에 모든 플레이어를 랜덤한 위치로 텔레포트
