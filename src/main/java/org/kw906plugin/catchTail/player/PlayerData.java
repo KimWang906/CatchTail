@@ -38,14 +38,16 @@ public class PlayerData {
     }
 
     public TailPlayer getNextPlayer(Player player) {
-        TailPlayer tailPlayer = tailPlayers.stream().filter(t -> t.getPlayer().getName().equals(player.getName())).findFirst().orElse(null);
-        if (tailPlayer == null) {
-            throw new NoSuchElementException("No such player");
-        }
+        TailPlayer tailPlayer = tailPlayers.stream().filter(p -> p.getPlayer().getName().equals(player.getName())).findFirst().orElse(null);
+        assert tailPlayer != null;
+        SendMessage.sendMessageOP(Component.text("현재 플레이어의 색깔 : " + tailPlayer.getColorName()).color(NamedTextColor.GRAY));
         String prevColor = tailPlayer.getColorName();
         while (true) {
             String nextColor = colorMapper.getNextColor(prevColor);
-            TailPlayer nextPlayer = tailPlayers.stream().filter(t -> t.getColorName().equals(nextColor)).findFirst().orElse(null);
+            TailPlayer nextPlayer = tailPlayers.stream().filter(p -> p.getColorName().equals(nextColor)).findFirst().orElse(null);
+            assert nextPlayer != null;
+            SendMessage.sendMessageOP(Component.text("타켓 플레이어 : " + nextPlayer.getPlayer().getName()).color(NamedTextColor.GRAY));
+            SendMessage.sendMessageOP(Component.text("타켓 색깔 : " + nextPlayer.getColorName()).color(NamedTextColor.GRAY));
             if (nextPlayer.isNotOut()) {
                 return nextPlayer;
             }
@@ -76,13 +78,13 @@ public class PlayerData {
             }
 
             SendMessage.sendMessagePlayer(player, Component.text("당신의 색깔은 ")
-                                                           .append(Component.text(String.format("%s색", colorName)).color(color))
-                                                           .append(Component.text(" 입니다.")));
-            int nextColorId = randomIndex-1 < 0 ? playerCount-1 : randomIndex;
+                    .append(Component.text(String.format("%s색", colorName)).color(color))
+                    .append(Component.text(" 입니다.")));
+            int nextColorId = randomIndex - 1 < 0 ? playerCount - 1 : randomIndex - 1;
             SendMessage.sendMessagePlayer(player, Component.text("당신이 죽여야 할 색깔은 ")
-                                                           .append(Component.text(String.format("%s색", colorMapper.getColorName(nextColorId)))
-                                                                            .color(colorMapper.getColor(nextColorId)))
-                                                           .append(Component.text(" 입니다.")));
+                    .append(Component.text(String.format("%s색", colorMapper.getColorName(nextColorId)))
+                            .color(colorMapper.getColor(nextColorId)))
+                    .append(Component.text(" 입니다.")));
         }
     }
 }
