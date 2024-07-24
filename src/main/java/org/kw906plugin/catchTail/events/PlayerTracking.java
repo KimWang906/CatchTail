@@ -73,7 +73,7 @@ public class PlayerTracking implements Listener {
                 nowX = nowX + 0.25 * unitX;
                 nowY = nowY + 0.25 * unitY;
                 nowZ = nowZ + 0.25 * unitZ;
-                world.spawnParticle(particle, nowX, nowY, nowZ, 1);
+                world.spawnParticle(particle, nowX, nowY, nowZ, 1, 0.1, 0.1, 0.1, 0.01);
                 SendMessage.sendMessageOP(Component.text(i + "번째 파티클 생성").color(NamedTextColor.AQUA));
             }
             clickedItem.subtract();

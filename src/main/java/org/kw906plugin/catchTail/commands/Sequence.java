@@ -2,19 +2,16 @@ package org.kw906plugin.catchTail.commands;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
-import org.bukkit.Location;
-import org.bukkit.Particle;
-import org.bukkit.Sound;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.kw906plugin.catchTail.CatchTail;
 import org.kw906plugin.catchTail.GameStatus;
@@ -256,15 +253,22 @@ public class Sequence {
         playerData.cleanup();
     }
 
-    public static void out(Player player) {
-        player.getWorld().playSound(player.getLocation(), Sound.ITEM_TOTEM_USE, 1.0f, 1.0f);
-        player.getWorld().spawnParticle(Particle.valueOf("totem_of_undying"), player.getLocation(), 1);
-
-        AttributeInstance attribute = player.getAttribute(Attribute.GENERIC_MAX_HEALTH);
+    public static void out(Player outPlayer, Player killedPlayer) {
+        AttributeInstance attribute = outPlayer.getAttribute(Attribute.GENERIC_MAX_HEALTH);
         if (attribute != null) {
             attribute.setBaseValue(10.0);
-            player.setHealth(10.0);
+            outPlayer.setHealth(10.0);
         }
+
+        ItemStack helmet = new ItemStack(Material.LEATHER_HELMET);
+        ItemStack chest = new ItemStack(Material.LEATHER_CHESTPLATE);
+        ItemStack leggings = new ItemStack(Material.LEATHER_LEGGINGS);
+        ItemStack boots = new ItemStack(Material.LEATHER_BOOTS);
+
+        LeatherArmorMeta helmetMeta = (LeatherArmorMeta) helmet.getItemMeta();
+        helmetMeta.setColor(Color.RED);
+
+
     }
 
     public static TailPlayer getNextPlayer(Player player) {

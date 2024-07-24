@@ -7,6 +7,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.kw906plugin.catchTail.commands.Configure;
 import org.kw906plugin.catchTail.commands.GameController;
 import org.kw906plugin.catchTail.events.EntityDamage;
+import org.kw906plugin.catchTail.events.EntityDamageByEntity;
 import org.kw906plugin.catchTail.events.PlayerTracking;
 
 import java.util.Objects;
@@ -22,6 +23,7 @@ public final class CatchTail extends JavaPlugin {
         config = new Configure();
         PluginManager pm = getServer().getPluginManager();
         pm.registerEvents(new EntityDamage(), this);
+        pm.registerEvents(new EntityDamageByEntity(), this);
         pm.registerEvents(new PlayerTracking(), this);
         Objects.requireNonNull(getCommand("catch-tail")).setExecutor(new GameController());
         getLogger().info("CatchTail 플러그인이 활성화 되었습니다.");
