@@ -6,13 +6,11 @@ import org.bukkit.entity.Player;
 public class TailPlayer {
 
     private Player player;
-    private String colorName;
-    private NamedTextColor color;
+    private Integer color;
     private Boolean isOut;
 
-    public TailPlayer(Player player, String colorName, NamedTextColor color) {
+    public TailPlayer(Player player, int color) {
         this.player = player;
-        this.colorName = colorName;
         this.color = color;
         isOut = false;
     }
@@ -25,14 +23,6 @@ public class TailPlayer {
         isOut = out;
     }
 
-    public NamedTextColor getColor() {
-        return color;
-    }
-
-    public void setColor(NamedTextColor color) {
-        this.color = color;
-    }
-
     public Player getPlayer() {
         return player;
     }
@@ -41,11 +31,11 @@ public class TailPlayer {
         this.player = player;
     }
 
-    public String getColorName() {
-        return colorName;
+    public Integer getColor() {
+        return color;
     }
 
-    public void setColorName(String colorName) {
-        this.colorName = colorName;
+    public void setColor(Integer color) {
+        this.color = color;
     }
 }

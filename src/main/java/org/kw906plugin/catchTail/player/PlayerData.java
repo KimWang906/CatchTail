@@ -9,13 +9,14 @@ import org.kw906plugin.catchTail.utils.ColorMapper;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.Objects;
 
 public class PlayerData {
 
     private final List<Player> players = new ArrayList<>();
     private final List<TailPlayer> tailPlayers = new ArrayList<>();
     private final ColorMapper colorMapper = new ColorMapper();
+    int playerCount = 0;
 
     public void add(Player player) {
         players.add(player);
@@ -40,14 +41,15 @@ public class PlayerData {
     public TailPlayer getNextPlayer(Player player) {
         TailPlayer tailPlayer = tailPlayers.stream().filter(p -> p.getPlayer().getName().equals(player.getName())).findFirst().orElse(null);
         assert tailPlayer != null;
-        SendMessage.sendMessageOP(Component.text("현재 플레이어의 색깔 : " + tailPlayer.getColorName()).color(NamedTextColor.GRAY));
-        String prevColor = tailPlayer.getColorName();
+        Integer prevColor = tailPlayer.getColor();
+        SendMessage.sendMessageOP(Component.text("현재 플레이어의 색깔 : " + colorMapper.getColorName(prevColor))
+                .color(NamedTextColor.GRAY));
         while (true) {
-            String nextColor = colorMapper.getNextColor(prevColor);
-            TailPlayer nextPlayer = tailPlayers.stream().filter(p -> p.getColorName().equals(nextColor)).findFirst().orElse(null);
+            Integer nextColor = prevColor - 1 < 0 ? playerCount - 1 : prevColor - 1;
+            TailPlayer nextPlayer = tailPlayers.stream().filter(p -> Objects.equals(p.getColor(), nextColor)).findFirst().orElse(null);
             assert nextPlayer != null;
             SendMessage.sendMessageOP(Component.text("타켓 플레이어 : " + nextPlayer.getPlayer().getName()).color(NamedTextColor.GRAY));
-            SendMessage.sendMessageOP(Component.text("타켓 색깔 : " + nextPlayer.getColorName()).color(NamedTextColor.GRAY));
+            SendMessage.sendMessageOP(Component.text("타켓 색깔 : " + colorMapper.getColorName(nextPlayer.getColor())).color(NamedTextColor.GRAY));
             if (nextPlayer.isNotOut()) {
                 return nextPlayer;
             }
@@ -57,7 +59,7 @@ public class PlayerData {
 
     public void shuffleColor() {
         List<Integer> existingColors = new ArrayList<>();
-        int playerCount = players.size();
+        playerCount = players.size();
         while (!players.isEmpty()) {
             int randomIndex = (int) (Math.random() * playerCount);
             if (existingColors.contains(randomIndex)) {
@@ -67,10 +69,10 @@ public class PlayerData {
             existingColors.add(randomIndex);
             Player player = players.removeFirst();
             String colorName = colorMapper.getColorName(randomIndex);
+            NamedTextColor color = colorMapper.getColor(randomIndex);
             Bukkit.getLogger().info("플레이어 등록 진행 중 - 플레이어 이름: " + player.getName());
 
-            NamedTextColor color = colorMapper.getColor(randomIndex);
-            boolean success = tailPlayers.add(new TailPlayer(player, colorName, color));
+            boolean success = tailPlayers.add(new TailPlayer(player, randomIndex));
             if (success) {
                 Bukkit.getLogger().info("플레이어 등록 성공");
                 Bukkit.getLogger().info("플레이어: " + player.getName());
