@@ -3,6 +3,7 @@ package org.kw906plugin.catchTail.player;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
+import org.bukkit.Color;
 import org.bukkit.entity.Player;
 import org.kw906plugin.catchTail.SendMessage;
 import org.kw906plugin.catchTail.utils.ColorMapper;
@@ -45,6 +46,12 @@ public class PlayerData {
         return tailPlayer.isNotOut();
     }
 
+    public void setPlayerOut(Player player) {
+        TailPlayer tailPlayer = getTailPlayer(player);
+        assert tailPlayer != null;
+        tailPlayer.setOut(true);
+    }
+
     public void stunPlayer(Player player) {
         TailPlayer tailPlayer = getTailPlayer(player);
         assert tailPlayer != null;
@@ -67,14 +74,13 @@ public class PlayerData {
         TailPlayer tailPlayer = getTailPlayer(player);
         assert tailPlayer != null;
         Integer prevColor = tailPlayer.getColor();
-        SendMessage.sendMessageOP(Component.text("현재 플레이어의 색깔 : " + colorMapper.getColorName(prevColor))
-                .color(NamedTextColor.GRAY));
+        Bukkit.getLogger().info("현재 플레이어의 색깔 : " + colorMapper.getColorName(prevColor));
         while (true) {
             int nextColor = prevColor - 1 < 0 ? playerCount - 1 : prevColor - 1;
             TailPlayer nextPlayer = tailPlayers.stream().filter(p -> Objects.equals(p.getColor(), nextColor)).findFirst().orElse(null);
             assert nextPlayer != null;
-            SendMessage.sendMessageOP(Component.text("타켓 플레이어 : " + nextPlayer.getPlayer().getName()).color(NamedTextColor.GRAY));
-            SendMessage.sendMessageOP(Component.text("타켓 색깔 : " + colorMapper.getColorName(nextPlayer.getColor())).color(NamedTextColor.GRAY));
+            Bukkit.getLogger().info("타켓 플레이어 : " + nextPlayer.getPlayer().getName());
+            Bukkit.getLogger().info("타켓 색깔 : " + colorMapper.getColorName(nextPlayer.getColor()));
             if (nextPlayer.isNotOut()) {
                 return nextPlayer;
             }
@@ -117,5 +123,14 @@ public class PlayerData {
 
     public TailPlayer getTailPlayer(Player player) {
         return tailPlayers.stream().filter(p -> p.getPlayer().getName().equals(player.getName())).findFirst().orElse(null);
+    }
+
+    public int getPlayerColor(Player player) {
+        TailPlayer tailPlayer = getTailPlayer(player);
+        return tailPlayer.getColor();
+    }
+
+    public Color getColorCode(int color) {
+        return colorMapper.getColorCode(color);
     }
 }
