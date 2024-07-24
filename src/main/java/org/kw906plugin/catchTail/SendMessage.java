@@ -2,6 +2,7 @@ package org.kw906plugin.catchTail;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.title.Title;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -57,5 +58,11 @@ public class SendMessage extends JavaPlugin {
         broadcastMessage(Component.text("개발자: KimWang906"));
         broadcastMessage(Component.text("GitHub: https://github.com/KimWang906"));
         broadcastMessage(Component.text(""));
+    }
+
+    public static void sendTitle(Player player, Component component, Title.Times time) {
+        Component title = Component.text("");
+        Title newTitle = Title.title(title, component, time);
+        player.showTitle(newTitle);
     }
 }

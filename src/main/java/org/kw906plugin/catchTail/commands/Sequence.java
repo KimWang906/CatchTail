@@ -2,12 +2,15 @@ package org.kw906plugin.catchTail.commands;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
-import org.bukkit.Location;
-import org.bukkit.World;
+import org.bukkit.*;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.kw906plugin.catchTail.CatchTail;
@@ -28,53 +31,52 @@ public class Sequence {
     private static PlayerData playerData = new PlayerData();
     private static int gameTime = 0;
 
-    public static void init()
-    {
+    public static void init() {
         if (GameStatus.getStatus().equals(GameStatus.INITIALIZED)) {
             SendMessage.sendMessageOP(Component.text("이미 게임이 초기화 되어있습니다!")
-                                               .color(NamedTextColor.RED));
+                    .color(NamedTextColor.RED));
             return;
         }
 
         SendMessage.broadcastMessage(Component.text("시퀀스 - 게임 초기화 진행")
-                                              .color(NamedTextColor.GRAY)
+                .color(NamedTextColor.GRAY)
         );
 
         try {
             SendMessage.broadcastMessage(Component.text("시퀀스 - 오버월드 월드보더 설정 중..")
-                                                  .color(NamedTextColor.GRAY));
+                    .color(NamedTextColor.GRAY));
             setWorldBorder(CatchTail.config.getOverworld(), CatchTail.config.overworldWorldBorderSize);
 
             SendMessage.broadcastMessage(Component.text("시퀀스 - 네더 월드보더 설정 중..")
-                                                  .color(NamedTextColor.GRAY));
+                    .color(NamedTextColor.GRAY));
             setWorldBorder(CatchTail.config.getNether(), CatchTail.config.netherWorldBorderSize);
 
             SendMessage.broadcastMessage(Component.text("시퀀스 - 엔드 월드보더 설정 중..")
-                                                  .color(NamedTextColor.GRAY));
+                    .color(NamedTextColor.GRAY));
             setWorldBorder(CatchTail.config.getTheEnd(), CatchTail.config.endWorldBorderSize);
 
             SendMessage.broadcastMessage(Component.text("시퀀스 - 플레이어 추가 중..")
-                                                  .color(NamedTextColor.GRAY));
-            for (Player player: getOnlinePlayers()) {
+                    .color(NamedTextColor.GRAY));
+            for (Player player : getOnlinePlayers()) {
                 playerData.add(player);
                 SendMessage.broadcastMessage(Component.text(
                         "시퀀스 - " + player.getName() + "을 대기 목록에 추가하였습니다."));
             }
         } catch (NullPointerException e) {
             SendMessage.broadcastMessage(Component.text("게임 초기화 도중 오류가 발생하였습니다.")
-                                                  .color(NamedTextColor.RED));
+                    .color(NamedTextColor.RED));
             SendMessage.broadcastMessage(Component.text("오류 내용: " + e.getMessage())
-                                                  .color(NamedTextColor.RED));
+                    .color(NamedTextColor.RED));
         }
 
         GameStatus.setStatus(GameStatus.INITIALIZED);
         SendMessage.broadcastMessage(Component.text("시퀀스 - 게임 초기화가 완료되었습니다.")
-                                              .color(NamedTextColor.GRAY));
+                .color(NamedTextColor.GRAY));
     }
 
     public static void start() {
         SendMessage.broadcastMessage(Component.text("시퀀스 - 게임이 시작됩니다!")
-                                              .color(NamedTextColor.BLUE));
+                .color(NamedTextColor.BLUE));
         setup();
         preparingTeleport();
 
@@ -82,22 +84,21 @@ public class Sequence {
 
     public static void stop() {
         SendMessage.broadcastMessage(Component.text("시퀀스 - 게임이 중지됩니다!")
-                                              .color(NamedTextColor.RED));
+                .color(NamedTextColor.RED));
         GameStatus.setStatus(GameStatus.STOPPED);
         cleanup();
     }
 
-    public static void unregister(String[] args)
-    {
+    public static void unregister(String[] args) {
         for (String playerName : args) {
             Player playerToRemove = getPlayerByName(playerName);
             if (playerToRemove != null) {
                 playerData.removePlayer(playerToRemove);
                 SendMessage.broadcastMessage(Component.text(playerName + " - 플레이어가 대기 목록에서 제외되었습니다.")
-                                                      .color(NamedTextColor.RED));
+                        .color(NamedTextColor.RED));
             } else {
                 SendMessage.broadcastMessage(Component.text(playerName + " - 플레이어를 찾을 수 없습니다.")
-                                                      .color(NamedTextColor.RED));
+                        .color(NamedTextColor.RED));
             }
         }
     }
@@ -111,9 +112,9 @@ public class Sequence {
 
                     SendMessage.sendMessageOP(
                             Component.text(field.getName() + ": ")
-                                     .color(NamedTextColor.AQUA)
-                                     .append(Component.text(value.toString())
-                                                      .color(NamedTextColor.GRAY)));
+                                    .color(NamedTextColor.AQUA)
+                                    .append(Component.text(value.toString())
+                                            .color(NamedTextColor.GRAY)));
                 } catch (IllegalAccessException e) {
                     getLogger().log(Level.WARNING, e.getMessage());
                 }
@@ -122,7 +123,7 @@ public class Sequence {
         }
 
         Optional<Field> configOptional = Arrays.stream(CatchTail.config.getClass().getFields())
-                                               .filter(f -> f.getName().equals(args[0])).findAny();
+                .filter(f -> f.getName().equals(args[0])).findAny();
         if (configOptional.isPresent()) {
             try {
                 Field targetConfig = configOptional.get();
@@ -140,13 +141,13 @@ public class Sequence {
                             success = true;
                         } catch (NumberFormatException e) {
                             SendMessage.sendMessageOP(Component.text("잘못된 입력 값으로 인해 변경에 실패하였습니다.\n" +
-                                                                             "요청된 값: " + args[1])
-                                                               .color(NamedTextColor.RED));
+                                            "요청된 값: " + args[1])
+                                    .color(NamedTextColor.RED));
                         }
                         break;
                     default:
                         SendMessage.sendMessageOP(Component.text("구현되지 않은 요청입니다. (요청된 타입: " + configType + ")")
-                                                           .color(NamedTextColor.DARK_GRAY));
+                                .color(NamedTextColor.DARK_GRAY));
                         break;
                 }
 
@@ -157,8 +158,8 @@ public class Sequence {
                 }
             } catch (IllegalAccessException e) {
                 SendMessage.sendMessageOP(Component.text("설정을 변경하던 중 오류가 발생하였습니다.\n" +
-                                                                 "자세한 내용은 서버 로그를 참고하세요.")
-                                                   .color(NamedTextColor.RED));
+                                "자세한 내용은 서버 로그를 참고하세요.")
+                        .color(NamedTextColor.RED));
                 getLogger().log(Level.WARNING, e.getMessage());
             }
         }
@@ -166,8 +167,8 @@ public class Sequence {
 
     public static void preparingTeleport() {
         GameStatus.setStatus(GameStatus.COUNT_DOWN);
-        SendMessage.broadcastMessage(Component.text("10초 후 랜덤한 위치로 텔레포트합니다.")
-                                              .color(NamedTextColor.BLUE));
+        SendMessage.broadcastMessage(Component.text("5초 후 랜덤한 위치로 텔레포트합니다.")
+                .color(NamedTextColor.BLUE));
 
         if (CatchTail.config.countDown > 0) {
             for (int i = CatchTail.config.countDown; i > 0; i--) {
@@ -176,13 +177,13 @@ public class Sequence {
                     @Override
                     public void run() {
                         SendMessage.broadcastMessage(Component.text(countdown + "초")
-                                                              .color(NamedTextColor.AQUA));
+                                .color(NamedTextColor.AQUA));
                     }
                 }.runTaskLater(JavaPlugin.getProvidingPlugin(CatchTail.class), (10 - i) * 20L);  // 1초(20 틱) 간격으로 실행
             }
         }
 
-        // 10초 후에 모든 플레이어를 랜덤한 위치로 텔레포트
+        // 5초 후에 모든 플레이어를 랜덤한 위치로 텔레포트
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -198,7 +199,7 @@ public class Sequence {
 
                 GameStatus.setStatus(GameStatus.RUNNING);
                 SendMessage.broadcastMessage(Component.text("모든 인원이 텔레포트되었습니다.")
-                                                      .color(NamedTextColor.BLUE));
+                        .color(NamedTextColor.BLUE));
                 playerData.shuffleColor();
             }
         }.runTaskLater(JavaPlugin.getProvidingPlugin(CatchTail.class), 190L);  // 10초 후 실행 (200 틱)
@@ -231,10 +232,9 @@ public class Sequence {
         return true;
     }
 
-    public static void setup()
-    {
+    public static void setup() {
         SendMessage.sendMessageOP(Component.text("시퀀스 - 셋업 진행중")
-                                           .color(NamedTextColor.GRAY)
+                .color(NamedTextColor.GRAY)
         );
         GameStatus.setStatus(GameStatus.ENGINE_SETUP);
 
@@ -253,9 +253,22 @@ public class Sequence {
         playerData.cleanup();
     }
 
-    public static void out(Player player)
-    {
-        // 죽인 팀에게 흡수되도록 코드 작성..
+    public static void out(Player outPlayer, Player killedPlayer) {
+        AttributeInstance attribute = outPlayer.getAttribute(Attribute.GENERIC_MAX_HEALTH);
+        if (attribute != null) {
+            attribute.setBaseValue(10.0);
+            outPlayer.setHealth(10.0);
+        }
+
+        ItemStack helmet = new ItemStack(Material.LEATHER_HELMET);
+        ItemStack chest = new ItemStack(Material.LEATHER_CHESTPLATE);
+        ItemStack leggings = new ItemStack(Material.LEATHER_LEGGINGS);
+        ItemStack boots = new ItemStack(Material.LEATHER_BOOTS);
+
+        LeatherArmorMeta helmetMeta = (LeatherArmorMeta) helmet.getItemMeta();
+        helmetMeta.setColor(Color.RED);
+
+
     }
 
     public static TailPlayer getNextPlayer(Player player) {

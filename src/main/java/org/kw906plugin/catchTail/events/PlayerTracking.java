@@ -2,6 +2,7 @@ package org.kw906plugin.catchTail.events;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.title.Title;
 import net.kyori.adventure.title.TitlePart;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -17,6 +18,7 @@ import org.kw906plugin.catchTail.GameStatus;
 import org.kw906plugin.catchTail.SendMessage;
 import org.kw906plugin.catchTail.commands.Sequence;
 
+import java.time.Duration;
 import java.util.NoSuchElementException;
 
 public class PlayerTracking implements Listener {
@@ -39,8 +41,10 @@ public class PlayerTracking implements Listener {
             World targetWorld = nextPlayer.getWorld();
             SendMessage.sendMessageOP(Component.text("월드 고정").color(NamedTextColor.AQUA));
             if (targetWorld != world) {
-                player.sendTitlePart(TitlePart.SUBTITLE, Component.text("추적 오류: 대상과 같은 월드에 있지 않습니다.")
-                        .color(NamedTextColor.RED));
+                Title.Times times = Title.Times.times(Duration.ZERO, Duration.ofSeconds(3), Duration.ZERO);
+                SendMessage.sendTitle(player, Component.text("추적 오류: 대상과 같은 월드에 있지 않습니다."), times);
+//                player.sendTitlePart(TitlePart.SUBTITLE, Component.text("추적 오류: 대상과 같은 월드에 있지 않습니다.")
+//                        .color(NamedTextColor.RED));
                 return;
             }
 
@@ -69,7 +73,7 @@ public class PlayerTracking implements Listener {
                 nowX = nowX + 0.25 * unitX;
                 nowY = nowY + 0.25 * unitY;
                 nowZ = nowZ + 0.25 * unitZ;
-                world.spawnParticle(particle, nowX, nowY, nowZ, 1);
+                world.spawnParticle(particle, nowX, nowY, nowZ, 1, 0.1, 0.1, 0.1, 0.01);
                 SendMessage.sendMessageOP(Component.text(i + "번째 파티클 생성").color(NamedTextColor.AQUA));
             }
             clickedItem.subtract();

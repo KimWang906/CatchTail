@@ -17,7 +17,7 @@ public class EntityDamage implements Listener {
             if (GameStatus.getStatus() == GameStatus.COUNT_DOWN) {
                 event.setCancelled(true);
                 SendMessage.sendMessagePlayer(player, Component.text("게임 시작전에는 공격하실 수 없습니다")
-                                                               .color(NamedTextColor.RED));
+                        .color(NamedTextColor.RED));
                 return;
             }
 
@@ -28,8 +28,11 @@ public class EntityDamage implements Listener {
                 return;
 
             if (event.getDamage() >= player.getHealth()) {
-                event.setDamage(0);
-                Sequence.out(player);
+                event.setCancelled(true);
+
+                Player nextPlayer = Sequence.getNextPlayer(player).getPlayer();
+
+//                Sequence.out(player);
             }
         }
     }

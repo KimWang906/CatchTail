@@ -26,7 +26,7 @@ public class Configure {
     public int endWorldBorderSize = 3000;
     private FileConfiguration config = getPlugin(CatchTail.class).getConfig();
 
-    public int countDown = 10;
+    public int countDown = 5;
 
     public Configure() {
         getPlugin(CatchTail.class).saveDefaultConfig();
