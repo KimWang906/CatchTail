@@ -27,7 +27,6 @@ import static org.kw906plugin.catchTail.utils.UpdateWorldBorder.setWorldBorder;
 public class Sequence {
     private static PlayerData playerData = new PlayerData();
     private static int gameTime = 0;
-    private static int countDown = -1;
 
     public static void init()
     {
@@ -170,7 +169,7 @@ public class Sequence {
         SendMessage.broadcastMessage(Component.text("10초 후 랜덤한 위치로 텔레포트합니다.")
                                               .color(NamedTextColor.BLUE));
 
-        for (int i = 9; i > 0; i--) {
+        for (int i = CatchTail.config.countDown; i > 0; i--) {
             int countdown = i;
             new BukkitRunnable() {
                 @Override
@@ -250,8 +249,6 @@ public class Sequence {
 
     public static void cleanup() {
         playerData.cleanup();
-
-        countDown = -1;
     }
 
     public static void out(Player player)

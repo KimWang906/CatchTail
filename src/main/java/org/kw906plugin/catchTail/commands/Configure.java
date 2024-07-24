@@ -21,15 +21,17 @@ public class Configure {
     private World nether = null;
     private World theEnd = null;
 
-    public int overworldWorldBorderSize = 100000;
+    public int overworldWorldBorderSize = 50000;
     public int netherWorldBorderSize = 12500;
     public int endWorldBorderSize = 3000;
     private FileConfiguration config = getPlugin(CatchTail.class).getConfig();
 
-    public int timer = 0;
+    public int countDown = 10;
 
     public Configure() {
         getPlugin(CatchTail.class).saveDefaultConfig();
+
+        checkIntValue("time.countdown", countDown);
 
         checkStringValue("worlds.world_name", worldName);
         overworld = getWorld(Objects.requireNonNull(config.getString("world_name")));
