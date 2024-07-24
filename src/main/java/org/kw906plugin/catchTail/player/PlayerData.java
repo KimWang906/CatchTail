@@ -69,8 +69,8 @@ public class PlayerData {
         SendMessage.sendMessageOP(Component.text("현재 플레이어의 색깔 : " + colorMapper.getColorName(prevColor))
                 .color(NamedTextColor.GRAY));
         while (true) {
-            Integer nextColor = prevColor - 1 < 0 ? playerCount - 1 : prevColor - 1;
-            TailPlayer nextPlayer = getTailPlayer(player);
+            int nextColor = prevColor - 1 < 0 ? playerCount - 1 : prevColor - 1;
+            TailPlayer nextPlayer = tailPlayers.stream().filter(p -> Objects.equals(p.getColor(), nextColor)).findFirst().orElse(null);
             assert nextPlayer != null;
             SendMessage.sendMessageOP(Component.text("타켓 플레이어 : " + nextPlayer.getPlayer().getName()).color(NamedTextColor.GRAY));
             SendMessage.sendMessageOP(Component.text("타켓 색깔 : " + colorMapper.getColorName(nextPlayer.getColor())).color(NamedTextColor.GRAY));
@@ -79,10 +79,6 @@ public class PlayerData {
             }
             prevColor = nextColor;
         }
-    }
-
-    public TailPlayer getTailPlayer(Player player) {
-        return tailPlayers.stream().filter(p -> p.getPlayer().getName().equals(player.getName())).findFirst().orElse(null);
     }
 
     public void shuffleColor() {
@@ -116,5 +112,9 @@ public class PlayerData {
                             .color(colorMapper.getColor(nextColorId)))
                     .append(Component.text(" 입니다.")));
         }
+    }
+
+    public TailPlayer getTailPlayer(Player player) {
+        return tailPlayers.stream().filter(p -> p.getPlayer().getName().equals(player.getName())).findFirst().orElse(null);
     }
 }
