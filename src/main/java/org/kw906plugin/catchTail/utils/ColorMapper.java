@@ -8,7 +8,6 @@ public class ColorMapper {
 
     private final HashMap<Integer, String> colorNameMap = new HashMap<>();
     private final HashMap<Integer, NamedTextColor> colorMap = new HashMap<>();
-    private final HashMap<String, String> nextColorMap = new HashMap<>();
 
     public String getColorName(int id) {
         return colorNameMap.get(id);
@@ -16,10 +15,6 @@ public class ColorMapper {
 
     public NamedTextColor getColor(int id) {
         return colorMap.get(id);
-    }
-
-    public String getNextColor(String colorName) {
-        return nextColorMap.get(colorName);
     }
 
     public ColorMapper() {
@@ -50,19 +45,5 @@ public class ColorMapper {
         colorMap.put(10, NamedTextColor.GRAY);
         colorMap.put(11, NamedTextColor.WHITE);
         colorMap.put(12, NamedTextColor.LIGHT_PURPLE);
-
-        nextColorMap.put("주황", "빨강");
-        nextColorMap.put("노랑", "주황");
-        nextColorMap.put("초록", "노랑");
-        nextColorMap.put("청록", "초록");
-        nextColorMap.put("파랑", "청록");
-        nextColorMap.put("남", "파랑");
-        nextColorMap.put("보라", "남");
-        nextColorMap.put("갈", "보라");
-        nextColorMap.put("검은", "갈");
-        nextColorMap.put("회백", "검은");
-        nextColorMap.put("흰", "회백");
-        nextColorMap.put("핑크", "흰");
-        nextColorMap.put("빨강", "핑크");
     }
 }

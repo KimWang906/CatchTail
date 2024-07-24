@@ -258,7 +258,7 @@ public class Sequence {
         // 죽인 팀에게 흡수되도록 코드 작성..
     }
 
-    public static TailPlayer getNextPlayer(Player player) throws NoSuchElementException {
+    public static TailPlayer getNextPlayer(Player player) {
         return playerData.getNextPlayer(player);
     }
 
