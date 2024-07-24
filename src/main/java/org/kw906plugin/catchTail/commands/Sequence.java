@@ -267,11 +267,11 @@ public class Sequence {
         List<Player> registeredPlayers = playerData.getPlayers();
         List<TailPlayer> tailPlayers = playerData.getTailPlayers();
 
-        SendMessage.sendMessageOP(Component.text("\n현재 게임중인 플레이어 목록"));
+        SendMessage.sendMessageOP(Component.text("현재 게임중인 플레이어 목록"));
         for (TailPlayer player : tailPlayers) {
             SendMessage.sendMessageOP(Component.text(player.getPlayer().getName()));
         }
-        SendMessage.sendMessageOP(Component.text("\n현재 등록된 플레이어 목록"));
+        SendMessage.sendMessageOP(Component.text("현재 등록된 플레이어 목록"));
         for (Player player : registeredPlayers) {
             SendMessage.sendMessageOP(Component.text(player.getName()));
         }
