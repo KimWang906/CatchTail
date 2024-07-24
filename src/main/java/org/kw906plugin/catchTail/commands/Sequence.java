@@ -32,7 +32,7 @@ public class Sequence {
     private static int gameTime = 0;
 
     public static void init() {
-        if (GameStatus.getStatus().equals(GameStatus.INITIALIZED)) {
+        if (GameStatus.getStatus().equals(GameStatus.INITIALIZED) || GameStatus.getStatus().equals(GameStatus.RUNNING)) {
             SendMessage.sendMessageOP(Component.text("이미 게임이 초기화 되어있습니다!")
                     .color(NamedTextColor.RED));
             return;
@@ -282,6 +282,7 @@ public class Sequence {
         SendMessage.sendMessageOP(Component.text("현재 게임중인 플레이어 목록"));
         for (TailPlayer player : tailPlayers) {
             SendMessage.sendMessageOP(Component.text(player.getPlayer().getName()));
+            SendMessage.sendMessageOP(Component.text(player.getColor())); // Debugging
         }
         SendMessage.sendMessageOP(Component.text("현재 등록된 플레이어 목록"));
         for (Player player : registeredPlayers) {

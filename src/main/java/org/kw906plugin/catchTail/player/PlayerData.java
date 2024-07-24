@@ -28,6 +28,7 @@ public class PlayerData {
 
     public void cleanup() {
         players.clear();
+        tailPlayers.clear();
     }
 
     public List<TailPlayer> getTailPlayers() {
