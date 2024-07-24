@@ -2,6 +2,7 @@ package org.kw906plugin.catchTail.player;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.kw906plugin.catchTail.SendMessage;
 import org.kw906plugin.catchTail.utils.ColorMapper;
@@ -64,17 +65,24 @@ public class PlayerData {
             existingColors.add(randomIndex);
             Player player = players.removeFirst();
             String colorName = colorMapper.getColorName(randomIndex);
+            Bukkit.getLogger().info("플레이어 등록 진행 중 - 플레이어 이름: " + player.getName());
+
             NamedTextColor color = colorMapper.getColor(randomIndex);
-            tailPlayers.add(new TailPlayer(player, colorName, color));
+            boolean success = tailPlayers.add(new TailPlayer(player, colorName, color));
+            if (success) {
+                Bukkit.getLogger().info("플레이어 등록 성공");
+                Bukkit.getLogger().info("플레이어: " + player.getName());
+                Bukkit.getLogger().info("색깔: " + colorName);
+            }
 
             SendMessage.sendMessagePlayer(player, Component.text("당신의 색깔은 ")
-                    .append(Component.text(String.format("%s색", colorName)).color(color))
-                    .append(Component.text(" 입니다.")));
+                                                           .append(Component.text(String.format("%s색", colorName)).color(color))
+                                                           .append(Component.text(" 입니다.")));
             int nextColorId = randomIndex-1 < 0 ? playerCount-1 : randomIndex;
             SendMessage.sendMessagePlayer(player, Component.text("당신이 죽여야 할 색깔은 ")
-                    .append(Component.text(String.format("%s색", colorMapper.getColorName(nextColorId)))
-                            .color(colorMapper.getColor(nextColorId)))
-                    .append(Component.text(" 입니다.")));
+                                                           .append(Component.text(String.format("%s색", colorMapper.getColorName(nextColorId)))
+                                                                            .color(colorMapper.getColor(nextColorId)))
+                                                           .append(Component.text(" 입니다.")));
         }
     }
 }
