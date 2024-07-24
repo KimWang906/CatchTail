@@ -8,6 +8,7 @@ import org.kw906plugin.catchTail.utils.ColorMapper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 public class PlayerData {
 
@@ -30,7 +31,7 @@ public class PlayerData {
     public TailPlayer getNextPlayer(Player player) {
         TailPlayer tailPlayer = tailPlayers.stream().filter(t -> t.getPlayer().getName().equals(player.getName())).findFirst().orElse(null);
         if (tailPlayer == null) {
-            return null;
+            throw new NoSuchElementException("No such player");
         }
         String prevColor = tailPlayer.getColorName();
         while (true) {
