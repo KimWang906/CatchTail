@@ -3,15 +3,12 @@ package org.kw906plugin.catchTail.player;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
-import net.kyori.adventure.title.Title;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.kw906plugin.catchTail.SendMessage;
 import org.kw906plugin.catchTail.commands.Sequence;
 import org.kw906plugin.catchTail.events.TickListener;
-
-import java.time.Duration;
 
 import static org.kw906plugin.catchTail.CatchTail.tickListener;
 
@@ -20,6 +17,9 @@ public class DetectEnemy {
 
     public static void initTickListener() {
         tickListener = new TickListener(() -> {
+            if (Sequence.getSurvivePlayerCount() <= 1) {
+                disableDetectEnemy();
+            }
             for (Player player : Bukkit.getOnlinePlayers()) {
                 TailPlayer tailPlayer = Sequence.getNextPlayer(player);
 

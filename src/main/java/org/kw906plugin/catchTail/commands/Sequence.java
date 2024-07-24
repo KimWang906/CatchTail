@@ -335,4 +335,8 @@ public class Sequence {
     public static boolean isPlayerOut(Player player) {
         return playerData.isPlayerOut(player);
     }
+
+    public static int getSurvivePlayerCount() {
+        return playerData.getSurvivePlayer();
+    }
 }

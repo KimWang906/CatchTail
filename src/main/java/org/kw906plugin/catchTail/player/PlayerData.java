@@ -154,4 +154,14 @@ public class PlayerData {
     public Color getColorCode(int color) {
         return colorMapper.getColorCode(color);
     }
+
+    public Integer getSurvivePlayer() {
+        int count = 0;
+        for (TailPlayer tailPlayer : tailPlayers) {
+            if (tailPlayer.isNotOut()) {
+                count ++;
+            }
+        }
+        return count;
+    }
 }
