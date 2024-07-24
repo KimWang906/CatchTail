@@ -29,8 +29,8 @@ import static org.kw906plugin.catchTail.utils.PlayerImpl.getPlayerByName;
 import static org.kw906plugin.catchTail.utils.UpdateWorldBorder.setWorldBorder;
 
 public class Sequence {
-    private static PlayerData playerData = new PlayerData();
-    private static int gameTime = 0;
+    private static final PlayerData playerData = new PlayerData();
+    private static final int gameTime = 0;
 
     public static void init() {
         if (GameStatus.getStatus().equals(GameStatus.INITIALIZED) || GameStatus.getStatus().equals(GameStatus.RUNNING)) {
@@ -262,19 +262,46 @@ public class Sequence {
             outPlayer.setHealth(10.0);
         }
 
+        playerData.setPlayerOut(outPlayer);
+        int color = playerData.getPlayerColor(killedPlayer);
+
         ItemStack helmet = new ItemStack(Material.LEATHER_HELMET);
         ItemStack chest = new ItemStack(Material.LEATHER_CHESTPLATE);
         ItemStack leggings = new ItemStack(Material.LEATHER_LEGGINGS);
         ItemStack boots = new ItemStack(Material.LEATHER_BOOTS);
 
-        LeatherArmorMeta helmetMeta = (LeatherArmorMeta) helmet.getItemMeta();
-        helmetMeta.setColor(Color.RED);
+        LeatherArmorMeta helmetsMeta = (LeatherArmorMeta) helmet.getItemMeta();
+        helmetsMeta.setColor(playerData.getColorCode(color));
+        LeatherArmorMeta chestMeta = (LeatherArmorMeta) chest.getItemMeta();
+        chestMeta.setColor(playerData.getColorCode(color));
+        LeatherArmorMeta leggingsMeta = (LeatherArmorMeta) leggings.getItemMeta();
+        leggingsMeta.setColor(playerData.getColorCode(color));
+        LeatherArmorMeta bootsMeta = (LeatherArmorMeta) boots.getItemMeta();
+        bootsMeta.setColor(playerData.getColorCode(color));
 
+        outPlayer.getInventory().setHelmet(helmet);
+        outPlayer.getInventory().setChestplate(chest);
+        outPlayer.getInventory().setLeggings(leggings);
+        outPlayer.getInventory().setBoots(boots);
+    }
+
+    public static void stun(Player player) {
+        if (playerData.isNotOutPlayer(player)) {
+            SendMessage.sendMessagePlayer(player, Component.text("기절하셨습니다."));
+            playerData.stunPlayer(player);
+        }
+    }
+
+    public static void heal(Player player) {
 
     }
 
     public static TailPlayer getNextPlayer(Player player) {
         return playerData.getNextPlayer(player);
+    }
+
+    public static Player getPrevPlayer(Player player) {
+        return playerData.getPrevPlayer(player).getPlayer();
     }
 
     public static void printPlayerData() {
@@ -292,13 +319,6 @@ public class Sequence {
         }
     }
 
-    public static void stun(Player player) {
-        if (playerData.isNotOutPlayer(player)) {
-            SendMessage.sendMessagePlayer(player, Component.text("기절하셨습니다."));
-            playerData.stunPlayer(player);
-        }
-    }
-
     public static boolean checkPlayerStun(Player player) {
         TailPlayer tailPlayer = playerData.getTailPlayer(player);
         Long now = System.currentTimeMillis() / 1000;
@@ -310,5 +330,9 @@ public class Sequence {
         if (playerData.getStunnedAt(player) != 0) {
             playerData.releaseStun(player);
         }
+    }
+
+    public static boolean isPlayerOut(Player player) {
+        return playerData.isPlayerOut(player);
     }
 }

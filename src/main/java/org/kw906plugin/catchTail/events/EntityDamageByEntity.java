@@ -25,7 +25,20 @@ public class EntityDamageByEntity implements Listener {
             if (event.getDamage() >= damagedPlayer.getHealth()) {
                 event.setCancelled(true);
                 damagedPlayer.getWorld().playSound(damagedPlayer.getLocation(), Sound.ITEM_TOTEM_USE, 1.0f, 1.0f);
-                damagedPlayer.getWorld().spawnParticle(Particle.valueOf("totem_of_undying"), damagedPlayer.getLocation(), 1);
+                damagedPlayer.getWorld().spawnParticle(Particle.valueOf("totem_of_undying"), damagedPlayer.getLocation(), 150);
+
+                if (Sequence.isPlayerOut(damagedPlayer)) {
+                    Sequence.stun(damagedPlayer);
+                }
+
+                if (Sequence.isPlayerOut(damagerPlayer) &&
+                        Sequence.getNextPlayer(damagerPlayer).getPlayer().equals(damagedPlayer)) {
+                    Sequence.out(damagedPlayer, Sequence.getPrevPlayer(damagerPlayer));
+                } else if (Sequence.isPlayerOut(damagerPlayer) &&
+                        !Sequence.getNextPlayer(damagerPlayer).getPlayer().equals(damagedPlayer)) {
+                    damagedPlayer.heal(20.0);
+                    Sequence.stun(damagerPlayer);
+                }
 
                 if (Sequence.getNextPlayer(damagerPlayer).getPlayer().equals(damagedPlayer)) {
                     Sequence.out(damagedPlayer, damagerPlayer);
@@ -33,6 +46,11 @@ public class EntityDamageByEntity implements Listener {
                     Sequence.out(damagerPlayer, damagedPlayer);
                 }
 
+            }
+        } else if (event.getEntity() instanceof Player player) {
+            if (event.getDamage() >= player.getHealth()) {
+                event.setDamage(0);
+                Sequence.stun(player);
             }
         }
 

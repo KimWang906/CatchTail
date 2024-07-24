@@ -1,6 +1,7 @@
 package org.kw906plugin.catchTail.utils;
 
 import net.kyori.adventure.text.format.NamedTextColor;
+import org.bukkit.Color;
 
 import java.util.HashMap;
 
@@ -8,6 +9,7 @@ public class ColorMapper {
 
     private final HashMap<Integer, String> colorNameMap = new HashMap<>();
     private final HashMap<Integer, NamedTextColor> colorMap = new HashMap<>();
+    private final HashMap<Integer, Color> colorCodeMap = new HashMap<>();
 
     public String getColorName(int id) {
         return colorNameMap.get(id);
@@ -15,6 +17,10 @@ public class ColorMapper {
 
     public NamedTextColor getColor(int id) {
         return colorMap.get(id);
+    }
+
+    public Color getColorCode(int color) {
+        return colorCodeMap.get(color);
     }
 
     public ColorMapper() {
@@ -45,5 +51,19 @@ public class ColorMapper {
         colorMap.put(10, NamedTextColor.GRAY);
         colorMap.put(11, NamedTextColor.WHITE);
         colorMap.put(12, NamedTextColor.LIGHT_PURPLE);
+
+        colorCodeMap.put(0, Color.RED);
+        colorCodeMap.put(1, Color.ORANGE);
+        colorCodeMap.put(2, Color.YELLOW);
+        colorCodeMap.put(3, Color.GREEN);
+        colorCodeMap.put(4, Color.fromRGB(1410892117));
+        colorCodeMap.put(5, Color.BLUE);
+        colorCodeMap.put(6, Color.fromRGB(2299476));
+        colorCodeMap.put(7, Color.PURPLE);
+        colorCodeMap.put(8, Color.fromRGB(5584944));
+        colorCodeMap.put(9, Color.BLACK);
+        colorCodeMap.put(10, Color.GRAY);
+        colorCodeMap.put(11, Color.WHITE);
+        colorCodeMap.put(12, Color.fromRGB(16733695));
     }
 }

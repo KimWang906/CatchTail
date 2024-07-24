@@ -20,10 +20,7 @@ public class EntityDamage implements Listener {
                         .color(NamedTextColor.RED));
             }
 
-            if (event.getDamage() >= player.getHealth()) {
-                event.setDamage(0);
-                Sequence.stun(player);
-            }
+
         }
     }
 }
