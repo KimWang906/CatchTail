@@ -46,6 +46,12 @@ public class PlayerData {
         return tailPlayer.isNotOut();
     }
 
+    public boolean isPlayerOut(Player player) {
+        TailPlayer tailPlayer = getTailPlayer(player);
+        assert tailPlayer != null;
+        return tailPlayer.isOut();
+    }
+
     public void setPlayerOut(Player player) {
         TailPlayer tailPlayer = getTailPlayer(player);
         assert tailPlayer != null;
@@ -85,6 +91,21 @@ public class PlayerData {
                 return nextPlayer;
             }
             prevColor = nextColor;
+        }
+    }
+
+    public TailPlayer getPrevPlayer(Player player) {
+        TailPlayer tailPlayer = getTailPlayer(player);
+        assert tailPlayer != null;
+        Integer nextColor = tailPlayer.getColor();
+        while (true) {
+            int prevColor = nextColor + 1 == playerCount ? 0 : nextColor + 1;
+            TailPlayer nextPlayer = tailPlayers.stream().filter(p -> Objects.equals(p.getColor(), prevColor)).findFirst().orElse(null);
+            assert nextPlayer != null;
+            if (nextPlayer.isNotOut()) {
+                return nextPlayer;
+            }
+            nextColor = prevColor;
         }
     }
 

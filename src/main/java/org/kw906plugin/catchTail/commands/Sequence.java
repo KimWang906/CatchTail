@@ -28,8 +28,8 @@ import static org.kw906plugin.catchTail.utils.PlayerImpl.getPlayerByName;
 import static org.kw906plugin.catchTail.utils.UpdateWorldBorder.setWorldBorder;
 
 public class Sequence {
-    private static PlayerData playerData = new PlayerData();
-    private static int gameTime = 0;
+    private static final PlayerData playerData = new PlayerData();
+    private static final int gameTime = 0;
 
     public static void init() {
         if (GameStatus.getStatus().equals(GameStatus.INITIALIZED) || GameStatus.getStatus().equals(GameStatus.RUNNING)) {
@@ -283,8 +283,23 @@ public class Sequence {
         outPlayer.getInventory().setBoots(boots);
     }
 
+    public static void stun(Player player) {
+        if (playerData.isNotOutPlayer(player)) {
+            SendMessage.sendMessagePlayer(player, Component.text("기절하셨습니다."));
+            playerData.stunPlayer(player);
+        }
+    }
+
+    public static void heal(Player player) {
+
+    }
+
     public static TailPlayer getNextPlayer(Player player) {
         return playerData.getNextPlayer(player);
+    }
+
+    public static Player getPrevPlayer(Player player) {
+        return playerData.getPrevPlayer(player).getPlayer();
     }
 
     public static void printPlayerData() {
@@ -302,13 +317,6 @@ public class Sequence {
         }
     }
 
-    public static void stun(Player player) {
-        if (playerData.isNotOutPlayer(player)) {
-            SendMessage.sendMessagePlayer(player, Component.text("기절하셨습니다."));
-            playerData.stunPlayer(player);
-        }
-    }
-
     public static boolean checkPlayerStun(Player player) {
         TailPlayer tailPlayer = playerData.getTailPlayer(player);
         Long now = System.currentTimeMillis() / 1000;
@@ -320,5 +328,9 @@ public class Sequence {
         if (playerData.getStunnedAt(player) != 0) {
             playerData.releaseStun(player);
         }
+    }
+
+    public static boolean isPlayerOut(Player player) {
+        return playerData.isPlayerOut(player);
     }
 }
