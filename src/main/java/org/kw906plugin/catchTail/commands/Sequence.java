@@ -76,7 +76,6 @@ public class Sequence {
     public static void start() {
         SendMessage.broadcastMessage(Component.text("시퀀스 - 게임이 시작됩니다!")
                                               .color(NamedTextColor.BLUE));
-        cleanup();
         setup();
         preparingTeleport();
 
@@ -199,6 +198,7 @@ public class Sequence {
                 GameStatus.setStatus(GameStatus.RUNNING);
                 SendMessage.broadcastMessage(Component.text("모든 인원이 텔레포트되었습니다.")
                                                       .color(NamedTextColor.BLUE));
+                playerData.shuffleColor();
             }
         }.runTaskLater(JavaPlugin.getProvidingPlugin(CatchTail.class), 190L);  // 10초 후 실행 (200 틱)
     }
@@ -246,9 +246,6 @@ public class Sequence {
                 current.remove();
             }
         }
-
-        playerData.shuffleColor();
-
     }
 
     public static void cleanup() {
