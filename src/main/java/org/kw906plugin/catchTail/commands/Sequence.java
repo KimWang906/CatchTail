@@ -265,4 +265,18 @@ public class Sequence {
     public static TailPlayer getNextPlayer(Player player) throws NoSuchElementException {
         return playerData.getNextPlayer(player);
     }
+
+    public static void printPlayerData() {
+        List<Player> registeredPlayers = playerData.getPlayers();
+        List<TailPlayer> tailPlayers = playerData.getTailPlayers();
+
+        SendMessage.sendMessageOP(Component.text("\n현재 게임중인 플레이어 목록"));
+        for (TailPlayer player : tailPlayers) {
+            SendMessage.sendMessageOP(Component.text(player.getPlayer().getName()));
+        }
+        SendMessage.sendMessageOP(Component.text("\n현재 등록된 플레이어 목록"));
+        for (Player player : registeredPlayers) {
+            SendMessage.sendMessageOP(Component.text(player.getName()));
+        }
+    }
 }

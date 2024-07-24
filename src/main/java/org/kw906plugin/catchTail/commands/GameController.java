@@ -53,6 +53,8 @@ public class GameController implements CommandExecutor {
                 String[] conf_args = Arrays.copyOfRange(args, 1, args.length);
                 Sequence.config(conf_args);
                 break;
+            case "list":
+                Sequence.printPlayerData();
             default:
                 break;
         }
