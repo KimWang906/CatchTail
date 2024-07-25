@@ -25,8 +25,7 @@ import java.util.*;
 import java.util.logging.Level;
 
 import static org.bukkit.Bukkit.*;
-import static org.kw906plugin.catchTail.utils.PlayerImpl.getPlayerByName;
-import static org.kw906plugin.catchTail.utils.PlayerImpl.removeAllItemsAndArmor;
+import static org.kw906plugin.catchTail.utils.PlayerImpl.*;
 import static org.kw906plugin.catchTail.utils.UpdateWorldBorder.setWorldBorder;
 
 public class Sequence {
@@ -46,14 +45,7 @@ public class Sequence {
 
         try {
             SendMessage.broadcastMessage(Component.text("시퀀스 - 플레이어 초기화 중.."));
-            for (Player player : Bukkit.getOnlinePlayers()) {
-                removeAllItemsAndArmor(player);
-                AttributeInstance attribute = player.getAttribute(Attribute.GENERIC_MAX_HEALTH);
-                assert attribute != null;
-                attribute.setBaseValue(20);
-                player.heal(20);
-                player.setFoodLevel(20);
-            }
+            setFullCondition();
 
             SendMessage.broadcastMessage(Component.text("시퀀스 - 오버월드 월드보더 설정 중..")
                     .color(NamedTextColor.GRAY));
@@ -245,6 +237,7 @@ public class Sequence {
 
     public static void cleanup() {
         playerData.cleanup();
+        setFullCondition();
     }
 
     public static void out(Player outPlayer, Player killedPlayer) {
