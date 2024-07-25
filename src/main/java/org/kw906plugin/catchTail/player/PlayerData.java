@@ -80,13 +80,10 @@ public class PlayerData {
         TailPlayer tailPlayer = getTailPlayer(player);
         assert tailPlayer != null;
         Integer prevColor = tailPlayer.getColor();
-        Bukkit.getLogger().info("현재 플레이어의 색깔 : " + colorMapper.getColorName(prevColor));
         while (true) {
             int nextColor = prevColor - 1 < 0 ? playerCount - 1 : prevColor - 1;
             TailPlayer nextPlayer = tailPlayers.stream().filter(p -> Objects.equals(p.getColor(), nextColor)).findFirst().orElse(null);
             assert nextPlayer != null;
-            Bukkit.getLogger().info("타켓 플레이어 : " + nextPlayer.getPlayer().getName());
-            Bukkit.getLogger().info("타켓 색깔 : " + colorMapper.getColorName(nextPlayer.getColor()));
             if (nextPlayer.isNotOut()) {
                 return nextPlayer;
             }
