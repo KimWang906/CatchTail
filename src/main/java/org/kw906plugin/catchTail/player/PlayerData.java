@@ -60,7 +60,6 @@ public class PlayerData {
 
     public void stunPlayer(Player player) {
         TailPlayer tailPlayer = getTailPlayer(player);
-        assert tailPlayer != null;
         tailPlayer.stunPlayer();
     }
 

@@ -289,6 +289,7 @@ public class Sequence {
         for (TailPlayer player : tailPlayers) {
             SendMessage.sendMessageOP(Component.text(player.getPlayer().getName()));
             SendMessage.sendMessageOP(Component.text(player.getColor())); // Debugging
+            SendMessage.sendMessageOP(Component.text(player.getStunnedAt()));
         }
         SendMessage.sendMessageOP(Component.text("현재 등록된 플레이어 목록"));
         for (Player player : registeredPlayers) {
@@ -301,12 +302,9 @@ public class Sequence {
         if (tailPlayer == null) {
             return 2;
         }
-        if (tailPlayer.isOut()) {
-            Long now = System.currentTimeMillis() / 1000;
-            long duration = tailPlayer.isNotOut() ? 120L : 30L;
-            return now - tailPlayer.getStunnedAt() >= duration ? 1 : 0;
-        }
-        return 2;
+        Long now = System.currentTimeMillis() / 1000;
+        long duration = tailPlayer.isNotOut() ? 120L : 30L;
+        return now - tailPlayer.getStunnedAt() >= duration ? 1 : 0;
     }
 
     public static void releaseStun(Player player) {
