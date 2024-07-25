@@ -263,6 +263,18 @@ public class Sequence {
             player.getInventory().setLeggings(leggings);
             player.getInventory().setBoots(boots);
         }
+
+        AttributeInstance attribute = killedPlayer.getAttribute(Attribute.GENERIC_MAX_HEALTH);
+        if (attribute != null) {
+            double resizedHealth = 20 - (2 * players.size());
+            if (resizedHealth < 10.0) {
+                attribute.setBaseValue(10.0);
+                killedPlayer.setHealth(10.0);
+            } else {
+                attribute.setBaseValue(resizedHealth);
+                killedPlayer.setHealth(resizedHealth);
+            }
+        }
     }
 
     public static void stun(Player player) {
