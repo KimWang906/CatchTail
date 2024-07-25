@@ -12,6 +12,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.kw906plugin.catchTail.CatchTail;
 import org.kw906plugin.catchTail.GameStatus;
@@ -265,7 +267,10 @@ public class Sequence {
 
     public static void stun(Player player) {
         if (playerData.isNotOutPlayer(player)) {
-            SendMessage.sendMessagePlayer(player, Component.text("기절하셨습니다."));
+            int duration = playerData.isNotOutPlayer(player) ? 120 : 30;
+            SendMessage.sendMessagePlayer(player, Component.text(duration + "초간 기절하셨습니다."));
+            PotionEffect fireResistance = new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 2 * duration * 20, 0);
+            player.addPotionEffect(fireResistance);
             playerData.stunPlayer(player);
         }
     }

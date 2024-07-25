@@ -24,6 +24,7 @@ public class EntityDamageByEntity implements Listener {
             }
             if (event.getDamage() >= damagedPlayer.getHealth()) {
                 event.setCancelled(true);
+                damagedPlayer.heal(20.0f);
                 damagedPlayer.getWorld().playSound(damagedPlayer.getLocation(), Sound.ITEM_TOTEM_USE, 1.0f, 1.0f);
                 damagedPlayer.getWorld().spawnParticle(Particle.valueOf("totem_of_undying"), damagedPlayer.getLocation(), 250);
 
