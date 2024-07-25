@@ -29,6 +29,7 @@ public class EntityDamageByEntity implements Listener {
                 damagedPlayer.getWorld().spawnParticle(Particle.valueOf("totem_of_undying"), damagedPlayer.getLocation(), 250);
 
                 if (Sequence.isPlayerOut(damagedPlayer)) {
+                    SendMessage.sendMessageOP(Component.text("노예가 죽음 히히"));
                     Sequence.stun(damagedPlayer);
                     return;
                 }
@@ -36,19 +37,24 @@ public class EntityDamageByEntity implements Listener {
                 if (Sequence.isPlayerOut(damagerPlayer) &&
                         Sequence.getNextPlayer(damagerPlayer).getPlayer().equals(damagedPlayer)) {
                     Sequence.out(damagedPlayer, Sequence.getPrevPlayer(damagerPlayer));
+                    SendMessage.sendMessageOP(Component.text("노예가 타겟 죽임 히히"));
                     return;
                 } else if (Sequence.isPlayerOut(damagerPlayer) &&
                         !Sequence.getNextPlayer(damagerPlayer).getPlayer().equals(damagedPlayer)) {
                     damagedPlayer.heal(20.0);
+                    SendMessage.sendMessageOP(Component.text("노예가 잘못된 사람 죽임 히히"));
                     Sequence.stun(damagerPlayer);
                     return;
                 }
 
                 if (Sequence.getNextPlayer(damagerPlayer).getPlayer().equals(damagedPlayer)) {
                     Sequence.out(damagedPlayer, damagerPlayer);
+                    SendMessage.sendMessageOP(Component.text("잘 죽임 히히"));
                 } else {
                     Sequence.out(damagerPlayer, damagedPlayer);
+                    SendMessage.sendMessageOP(Component.text("잘못 죽임 히히"));
                 }
+                SendMessage.sendMessageOP(Component.text("누구 죽임? 히히"));
             }
         }
     }
