@@ -242,7 +242,6 @@ public class Sequence {
     }
 
     public static void out(Player outPlayer, Player killedPlayer) {
-        List<Player> players = playerData.getSlaveFromPlayer(outPlayer);
         int color = playerData.getPlayerColor(killedPlayer);
         ItemStack helmet = new ItemStack(Material.LEATHER_HELMET);
         ItemStack chest = new ItemStack(Material.LEATHER_CHESTPLATE);
@@ -250,6 +249,7 @@ public class Sequence {
         ItemStack boots = new ItemStack(Material.LEATHER_BOOTS);
         applyArmors(playerData, color, helmet, chest, leggings, boots);
 
+        List<Player> players = playerData.getSlaveFromPlayer(outPlayer);
         for (Player player : players) {
             AttributeInstance attribute = player.getAttribute(Attribute.GENERIC_MAX_HEALTH);
             if (attribute != null) {
