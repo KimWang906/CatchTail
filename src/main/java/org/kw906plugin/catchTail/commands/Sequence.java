@@ -201,12 +201,9 @@ public class Sequence {
             @Override
             public void run() {
                 World world = getWorlds().getFirst();
-                List<Location> locations = new ArrayList<>();
-                Random random = new Random();
 
                 for (Player player : getOnlinePlayers()) {
-                    Location randomLocation = getRandomLocation(world, random, locations);
-                    locations.add(randomLocation);
+                    Location randomLocation = getRandomLocation(world);
                     player.teleport(randomLocation);
                 }
 
@@ -219,30 +216,15 @@ public class Sequence {
     }
 
 
-    private static Location getRandomLocation(World world, Random random, List<Location> locations) {
-        Location location;
-        boolean isSafe;
+    private static Location getRandomLocation(World world) {
+        Random random = new Random();
+        double x = random.nextInt(3000);
+        double z = random.nextInt(3000);
 
-        do {
-            double x = random.nextInt(3000);
-            double z = random.nextInt(3000);
-            location = new Location(world, x, 0, z);
-            location.setY(world.getHighestBlockAt(location).getY() + 1);
-
-            isSafe = isSafeLocation(location, locations);
-
-        } while (!isSafe);
+        Location location = new Location(world, x, 0, z);
+        location.setY(world.getHighestBlockAt(location).getY() + 1);
 
         return location;
-    }
-
-    private static boolean isSafeLocation(Location location, List<Location> locations) {
-        for (Location loc : locations) {
-            if (loc.distance(location) < 2000) {
-                return false;
-            }
-        }
-        return true;
     }
 
     public static void setup() {
@@ -301,10 +283,6 @@ public class Sequence {
             SendMessage.sendMessagePlayer(player, Component.text("기절하셨습니다."));
             playerData.stunPlayer(player);
         }
-    }
-
-    public static void heal(Player player) {
-
     }
 
     public static TailPlayer getNextPlayer(Player player) {
