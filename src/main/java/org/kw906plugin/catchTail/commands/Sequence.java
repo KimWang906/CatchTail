@@ -255,14 +255,7 @@ public class Sequence {
         ItemStack leggings = new ItemStack(Material.LEATHER_LEGGINGS);
         ItemStack boots = new ItemStack(Material.LEATHER_BOOTS);
 
-        LeatherArmorMeta helmetsMeta = (LeatherArmorMeta) helmet.getItemMeta();
-        helmetsMeta.setColor(playerData.getColorCode(color));
-        LeatherArmorMeta chestMeta = (LeatherArmorMeta) chest.getItemMeta();
-        chestMeta.setColor(playerData.getColorCode(color));
-        LeatherArmorMeta leggingsMeta = (LeatherArmorMeta) leggings.getItemMeta();
-        leggingsMeta.setColor(playerData.getColorCode(color));
-        LeatherArmorMeta bootsMeta = (LeatherArmorMeta) boots.getItemMeta();
-        bootsMeta.setColor(playerData.getColorCode(color));
+        applyArmors(playerData, color, helmet, chest, leggings, boots);
 
         outPlayer.getInventory().setHelmet(helmet);
         outPlayer.getInventory().setChestplate(chest);
