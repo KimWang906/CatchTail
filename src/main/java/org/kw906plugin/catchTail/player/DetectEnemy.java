@@ -9,7 +9,6 @@ import org.bukkit.entity.Player;
 import org.kw906plugin.catchTail.SendMessage;
 import org.kw906plugin.catchTail.commands.Sequence;
 import org.kw906plugin.catchTail.events.TickListener;
-
 import static org.kw906plugin.catchTail.CatchTail.tickListener;
 
 public class DetectEnemy {
@@ -32,9 +31,13 @@ public class DetectEnemy {
                     int offsetY = Math.abs(playerLocation.getBlockY() - enemyLocation.getBlockY());
                     int offsetZ = Math.abs(playerLocation.getBlockZ() - enemyLocation.getBlockZ());
                     if (offsetX <= 30 && offsetY <= 30 && offsetZ <= 30) {
-                        SendMessage.sendActionBar(player, Component.text("[ ♥ ]")
-                                                                   .decoration(TextDecoration.BOLD, true)
-                                                                   .color(NamedTextColor.RED));
+//                        new BukkitRunnable() {
+//                            @Override
+//                            public void run() {
+//                                playHeartBeat(player);
+//                            }
+//                        }.runTaskLater(getPlugin(CatchTail.class), 120L);
+                        playHeartBeat(player);
                     }
                 }
             }
@@ -56,4 +59,19 @@ public class DetectEnemy {
             tickListener = null;
         }
     }
+
+    public static void playHeartBeat(Player player) {
+//        String heartbeatSound = "minecraft:entity.warden.heartbeat";
+//        player.playSound(player.getLocation(), heartbeatSound, 1.0F, 1.0F);
+        SendMessage.sendActionBar(player, Component.text("[ ♥ ]")
+                                                   .decoration(TextDecoration.BOLD, true)
+                                                   .color(NamedTextColor.RED));
+
+    }
+
+//    static void stopHeartBeat(Player player) {
+//        String heartbeatSound = "minecraft:entity.warden.heartbeat";
+//        player.sendActionBar(Component.text(""));
+//
+//    }
 }

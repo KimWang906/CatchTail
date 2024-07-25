@@ -91,7 +91,6 @@ public class Sequence {
                 .color(NamedTextColor.BLUE));
         setup();
         preparingTeleport();
-        DetectEnemy.enableDetectEnemy();
     }
 
     public static void stop() {
@@ -196,7 +195,6 @@ public class Sequence {
             }
         }
 
-        // 5초 후에 모든 플레이어를 랜덤한 위치로 텔레포트
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -211,6 +209,7 @@ public class Sequence {
                 SendMessage.broadcastMessage(Component.text("모든 인원이 텔레포트되었습니다.")
                         .color(NamedTextColor.BLUE));
                 playerData.shuffleColor();
+                DetectEnemy.enableDetectEnemy();
             }
         }.runTaskLater(JavaPlugin.getProvidingPlugin(CatchTail.class), CatchTail.config.countDown * 20L);  // 10초 후 실행 (200 틱)
     }
@@ -285,6 +284,10 @@ public class Sequence {
         }
     }
 
+    public static void heal(Player player) {
+
+    }
+
     public static TailPlayer getNextPlayer(Player player) {
         return playerData.getNextPlayer(player);
     }
@@ -327,5 +330,9 @@ public class Sequence {
 
     public static int getSurvivePlayerCount() {
         return playerData.getSurvivePlayer();
+    }
+
+    public static List<Player> getPlayers() {
+        return playerData.getPlayers();
     }
 }
