@@ -311,11 +311,17 @@ public class Sequence {
         }
     }
 
-    public static boolean checkPlayerStun(Player player) {
+    public static Integer checkPlayerStun(Player player) {
         TailPlayer tailPlayer = playerData.getTailPlayer(player);
+        if (tailPlayer == null) {
+            return 2;
+        }
+        if (tailPlayer.isOut()) {
+            return 0;
+        }
         Long now = System.currentTimeMillis() / 1000;
         long duration = tailPlayer.isNotOut() ? 120L : 30L;
-        return now - tailPlayer.getStunnedAt() >= duration;
+        return now - tailPlayer.getStunnedAt() >= duration ? 1 : 0;
     }
 
     public static void releaseStun(Player player) {
