@@ -19,5 +19,6 @@ public class PlayerMovement implements Listener {
         } else {
             Sequence.releaseStun(player);
         }
+
     }
 }
