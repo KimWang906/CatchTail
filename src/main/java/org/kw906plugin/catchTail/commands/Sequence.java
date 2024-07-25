@@ -266,13 +266,11 @@ public class Sequence {
     }
 
     public static void stun(Player player) {
-        if (playerData.isNotOutPlayer(player)) {
-            int duration = playerData.isNotOutPlayer(player) ? 120 : 30;
-            SendMessage.sendMessagePlayer(player, Component.text(duration + "초간 기절하셨습니다."));
-            PotionEffect fireResistance = new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 2 * duration * 20, 0);
-            player.addPotionEffect(fireResistance);
-            playerData.stunPlayer(player);
-        }
+        int duration = playerData.isNotOutPlayer(player) ? 120 : 30;
+        SendMessage.sendMessagePlayer(player, Component.text(duration + "초간 기절하셨습니다."));
+        PotionEffect fireResistance = new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 5 + duration * 20, 0);
+        player.addPotionEffect(fireResistance);
+        playerData.stunPlayer(player);
     }
 
     public static TailPlayer getNextPlayer(Player player) {
