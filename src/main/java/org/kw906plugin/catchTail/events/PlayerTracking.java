@@ -1,7 +1,7 @@
 package org.kw906plugin.catchTail.events;
 
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.title.Title;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.World;
@@ -14,8 +14,6 @@ import org.bukkit.inventory.ItemStack;
 import org.kw906plugin.catchTail.GameStatus;
 import org.kw906plugin.catchTail.SendMessage;
 import org.kw906plugin.catchTail.commands.Sequence;
-
-import java.time.Duration;
 
 public class PlayerTracking implements Listener {
 
@@ -36,7 +34,7 @@ public class PlayerTracking implements Listener {
 
             World targetWorld = nextPlayer.getWorld();
             if (targetWorld != world) {
-                SendMessage.sendActionBar(player, Component.text("추적 오류: 대상과 같은 월드에 있지 않습니다."));
+                SendMessage.sendActionBar(player, Component.text("추적 오류: 대상과 같은 월드에 있지 않습니다.").color(NamedTextColor.RED));
                 return;
             }
 

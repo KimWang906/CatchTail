@@ -76,7 +76,7 @@ public class PlayerData {
         return tailPlayer.getStunnedAt();
     }
 
-    public TailPlayer getNextPlayer(Player player) {
+    public TailPlayer getNextSurvivePlayer(Player player) {
         TailPlayer tailPlayer = getTailPlayer(player);
         assert tailPlayer != null;
         Integer prevColor = tailPlayer.getColor();
@@ -156,9 +156,34 @@ public class PlayerData {
         int count = 0;
         for (TailPlayer tailPlayer : tailPlayers) {
             if (tailPlayer.isNotOut()) {
-                count ++;
+                count++;
             }
         }
         return count;
+    }
+
+    public List<Player> getSlaveFromPlayer(Player player) {
+        List<Player> outPlayers = new ArrayList<>();
+        outPlayers.add(player);
+        while (true) {
+            TailPlayer slave = getNextPlayer(player);
+            if (slave.isOut()) {
+                outPlayers.add(slave.getPlayer());
+                player = outPlayers.getLast();
+            } else {
+                break;
+            }
+        }
+        return outPlayers;
+    }
+
+    private TailPlayer getNextPlayer(Player player) {
+        TailPlayer tailPlayer = getTailPlayer(player);
+        assert tailPlayer != null;
+        Integer color = tailPlayer.getColor();
+        int nextColor = color - 1 < 0 ? playerCount - 1 : color - 1;
+        TailPlayer nextPlayer = tailPlayers.stream().filter(p -> Objects.equals(p.getColor(), nextColor)).findFirst().orElse(null);
+        assert nextPlayer != null;
+        return nextPlayer;
     }
 }
