@@ -10,7 +10,6 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -243,26 +242,27 @@ public class Sequence {
     }
 
     public static void out(Player outPlayer, Player killedPlayer) {
-        AttributeInstance attribute = outPlayer.getAttribute(Attribute.GENERIC_MAX_HEALTH);
-        if (attribute != null) {
-            attribute.setBaseValue(10.0);
-            outPlayer.setHealth(10.0);
-        }
-
-        playerData.setPlayerOut(outPlayer);
+        List<Player> players = playerData.getSlaveFromPlayer(outPlayer);
         int color = playerData.getPlayerColor(killedPlayer);
-
         ItemStack helmet = new ItemStack(Material.LEATHER_HELMET);
         ItemStack chest = new ItemStack(Material.LEATHER_CHESTPLATE);
         ItemStack leggings = new ItemStack(Material.LEATHER_LEGGINGS);
         ItemStack boots = new ItemStack(Material.LEATHER_BOOTS);
-
         applyArmors(playerData, color, helmet, chest, leggings, boots);
 
-        outPlayer.getInventory().setHelmet(helmet);
-        outPlayer.getInventory().setChestplate(chest);
-        outPlayer.getInventory().setLeggings(leggings);
-        outPlayer.getInventory().setBoots(boots);
+        for (Player player : players) {
+            AttributeInstance attribute = player.getAttribute(Attribute.GENERIC_MAX_HEALTH);
+            if (attribute != null) {
+                attribute.setBaseValue(10.0);
+                player.setHealth(10.0);
+            }
+            playerData.setPlayerOut(player);
+
+            player.getInventory().setHelmet(helmet);
+            player.getInventory().setChestplate(chest);
+            player.getInventory().setLeggings(leggings);
+            player.getInventory().setBoots(boots);
+        }
     }
 
     public static void stun(Player player) {
@@ -276,7 +276,7 @@ public class Sequence {
     }
 
     public static TailPlayer getNextPlayer(Player player) {
-        return playerData.getNextPlayer(player);
+        return playerData.getNextSurvivePlayer(player);
     }
 
     public static Player getPrevPlayer(Player player) {
