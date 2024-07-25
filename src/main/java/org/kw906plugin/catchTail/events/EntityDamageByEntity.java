@@ -29,15 +29,18 @@ public class EntityDamageByEntity implements Listener {
 
                 if (Sequence.isPlayerOut(damagedPlayer)) {
                     Sequence.stun(damagedPlayer);
+                    return;
                 }
 
                 if (Sequence.isPlayerOut(damagerPlayer) &&
                         Sequence.getNextPlayer(damagerPlayer).getPlayer().equals(damagedPlayer)) {
                     Sequence.out(damagedPlayer, Sequence.getPrevPlayer(damagerPlayer));
+                    return;
                 } else if (Sequence.isPlayerOut(damagerPlayer) &&
                         !Sequence.getNextPlayer(damagerPlayer).getPlayer().equals(damagedPlayer)) {
                     damagedPlayer.heal(20.0);
                     Sequence.stun(damagerPlayer);
+                    return;
                 }
 
                 if (Sequence.getNextPlayer(damagerPlayer).getPlayer().equals(damagedPlayer)) {
