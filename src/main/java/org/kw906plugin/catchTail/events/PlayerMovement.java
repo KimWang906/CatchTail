@@ -12,6 +12,7 @@ public class PlayerMovement implements Listener {
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event) {
         Player player = event.getPlayer();
+        SendMessage.sendActionBar(player, Component.text("움직임"));
         if (Sequence.checkPlayerStun(player)) {
             SendMessage.sendActionBar(player, Component.text("기절!"));
             event.setCancelled(true);

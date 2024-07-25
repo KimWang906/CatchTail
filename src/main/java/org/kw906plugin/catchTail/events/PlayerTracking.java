@@ -1,6 +1,5 @@
 package org.kw906plugin.catchTail.events;
 
-import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.title.Title;
 import org.bukkit.Material;
@@ -37,7 +36,6 @@ public class PlayerTracking implements Listener {
 
             World targetWorld = nextPlayer.getWorld();
             if (targetWorld != world) {
-                Title.Times times = Title.Times.times(Duration.ZERO, Duration.ofSeconds(3), Duration.ZERO);
                 SendMessage.sendActionBar(player, Component.text("추적 오류: 대상과 같은 월드에 있지 않습니다."));
                 return;
             }
