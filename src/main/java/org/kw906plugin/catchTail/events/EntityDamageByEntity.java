@@ -52,7 +52,14 @@ public class EntityDamageByEntity implements Listener {
                 } else {
                     Sequence.out(damagerPlayer, damagedPlayer);
                 }
+                return;
             }
+        }
+        if (event.getEntity() instanceof Player player) {
+            event.setCancelled(true);
+            player.getWorld().playSound(player.getLocation(), Sound.ITEM_TOTEM_USE, 1.0f, 1.0f);
+            player.getWorld().spawnParticle(Particle.valueOf("totem_of_undying"), player.getLocation(), 250);
+            Sequence.stun(player);
         }
     }
 }
