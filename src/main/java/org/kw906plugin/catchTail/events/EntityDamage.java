@@ -27,6 +27,7 @@ public class EntityDamage implements Listener {
                 player.getWorld().playSound(player.getLocation(), Sound.ITEM_TOTEM_USE, 1.0f, 1.0f);
                 player.getWorld().spawnParticle(Particle.valueOf("totem_of_undying"), player.getLocation(), 250);
                 Sequence.stun(player);
+                SendMessage.sendMessageOP(Component.text(event.getCause().name()));
             }
         }
     }
