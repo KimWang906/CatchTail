@@ -284,10 +284,6 @@ public class Sequence {
         }
     }
 
-    public static void heal(Player player) {
-
-    }
-
     public static TailPlayer getNextPlayer(Player player) {
         return playerData.getNextPlayer(player);
     }
@@ -317,11 +313,11 @@ public class Sequence {
             return 2;
         }
         if (tailPlayer.isOut()) {
-            return 0;
+            Long now = System.currentTimeMillis() / 1000;
+            long duration = tailPlayer.isNotOut() ? 120L : 30L;
+            return now - tailPlayer.getStunnedAt() >= duration ? 1 : 0;
         }
-        Long now = System.currentTimeMillis() / 1000;
-        long duration = tailPlayer.isNotOut() ? 120L : 30L;
-        return now - tailPlayer.getStunnedAt() >= duration ? 1 : 0;
+        return 2;
     }
 
     public static void releaseStun(Player player) {
