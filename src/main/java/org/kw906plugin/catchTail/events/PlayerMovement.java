@@ -13,13 +13,17 @@ public class PlayerMovement implements Listener {
     public void onPlayerMove(PlayerMoveEvent event) {
         Player player = event.getPlayer();
         SendMessage.sendActionBar(player, Component.text("움직임"));
-        if (Sequence.checkPlayerStun(player)) {
-            SendMessage.sendActionBar(player, Component.text("기절!"));
-            event.setCancelled(true);
-            player.teleport(event.getFrom());
-        } else {
-            Sequence.releaseStun(player);
+        switch (Sequence.checkPlayerStun(player)) {
+            case 0:
+                SendMessage.sendActionBar(player, Component.text("기절!"));
+                event.setCancelled(true);
+                player.teleport(event.getFrom());
+                break;
+            case 1:
+                Sequence.releaseStun(player);
+                break;
+            default:
+                break;
         }
-
     }
 }
